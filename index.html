@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+
+    <body>
+        <div class="app">
+
+            <aside class="sidebar">
+                <div class="logo">
+                    <svg width="42" height="42" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 53.5C0 63 10.5 64 10.5 64C10.5 64 21.633 64.2238 21.5 53.5C21.367 42.7762 23.1559 39.999 30.5 31C37.8441 22.001 52.8052 21.7459 53 21.5C53 21.5 64 21 64 10.5C64 0 53 0 53 0C53 0 42.5 0 42.5 10.5C42.5 21 32 21.5 32 21.5C32 21.5 21.5 21 21.5 10.5C21.5 0 10.5 0 10.5 0C10.5 0 0 0.499993 0 10.5C0 20.5 10.5 21.5 10.5 21.5C10.5 21.5 21.5 22 21.5 32C21.5 42 10.5 43 10.5 43C10.5 43 0 44 0 53.5Z" fill="white"/>
+                        <path d="M64 46.5C64.0369 36.7971 55.8828 29.2629 46 29.5C36.1173 29.7371 29.4432 38.6708 29.5 46.5C29.5569 54.3292 35.9996 63.9293 46 64C56.0005 64.0707 63.9631 56.2029 64 46.5Z" fill="white"/>
+                    </svg>
+                    <span class="logo_icon">Monyx</span>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a class="sidebar-item">Dashboard</a>
+                    <a class="sidebar-item">Transactions</a>
+                    <a class="sidebar-item">Analytics</a>
+                    <a class="sidebar-item">Budget</a>
+                    <a class="sidebar-item">Goals</a>
+                    <a class="sidebar-item">Reports</a>
+                    <a class="sidebar-item">Settings</a>
+                </nav>
+
+                <!-- <div class="sidebar-balance">
+                    <span>Total balance</span>
+                    <strong>$24,640.90</strong>
+                </div> -->
+            </aside>
+
+            <main class="main">
+
+                <header class="topbar">
+                    <h1>Dashboard</h1>
+                    <button class="date-button">
+                        <div>
+                            <data>May 24, 2024</data>
+                            <p>[_]</p>
+                        </div>
+                    </button>
+                </header>
+
+                <section class="dashboard">
+                    <section class="card balance-card">
+                        <div class="balance-card_content">
+                            <h2 class="label">Total balance</h2>
+                            <div class="balance-card_amount-row">
+                            <p class="amount balance-card_amount">$24,530.80</p>
+                            <button class="currency-button">USD</button>
+                            </div>
+                            <p class="trend">+12.5% from last month</p>
+
+                            <div class="stats-row">
+                                <div class="stat">
+                                    <span class="label-mini">Income</span>
+                                    <strong>$32,450.00</strong>
+                                    <div class="progress-bar">
+                                        <div class="progress-bar_value"></div>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <span class="label-mini">Expenses</span>
+                                    <strong>$7,919.20</strong>
+                                    <progress class="progress-bar" value="28" max="100"></progress>
+                                </div>
+                                <div class="stat">
+                                    <span class="label-mini">Savings rate</span>
+                                    <strong>68%</strong>
+                                    <progress class="progress-bar" value="68" max="100"></progress>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="balance-card-visual">
+                            <img src="./assets/balance_card_image.png">
+                        </div>
+                    </section>
+                    
+                    <section class="card income-card">
+                        <h2 class="label">Income</h2>
+                        <p class="amount">$32,450.00</p>
+                        <p class="trend">+12.5% from last month</p>
+                        <p class="label-mini stats_label">Top sources</p>
+                        <div class="stats">
+                            <div class="stats_sources">
+                                <span>Salary</span>
+                                <span>Freelance</span>
+                                <span>Investments</span>
+                            </div>
+                            <div class="stats_amount">
+                                <span>$24,000.00</span>
+                                <span>$5,450.00</span>
+                                <span>$3,000.00</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card expense-card">
+                        <h2 class="label">Expenses</h2>
+                        <p class="amount">$7,919.20</p>
+                        <p class="trend">-8,2% from last month</p>
+                        <p class="label-mini stats_label">Top categories</p>
+                        <div class="stats">
+                            <div class="stats_sources">
+                                <span>Housing</span>
+                                <span>Food</span>
+                                <span>Transport</span>
+                            </div>
+                            <div class="stats_amount">
+                                <span>$2,450.00</span>
+                                <span>$1,230.00</span>
+                                <span>$890.00</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card budget-card">
+                        <h2 class="label">Budget status</h2>
+                        <div class="budget_card-content">
+                            <div class="budget-card_info">
+                                <div class="progress-circle">
+                                    <div>
+                                        <strong>72%</strong>
+                                        <span>Used</span>
+                                    </div>
+                                </div>
+
+                                <div class="budget-amounts">
+                                    <div>
+                                        <strong>$2,080.80</strong>
+                                        <p class="label-mini">Remaining</p>
+                                    </div>
+                                    <div>
+                                        <strong>$10,080.00</strong>
+                                        <p class="label-mini">Total budget</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="reset-time">
+                                <p class="label-mini">Reset in</p>
+                                <time>15D : 08H : 42M</time>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card transactions-card">
+                        <h2 class="label">Recent transactions</h2>
+                        <table class="transactions-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Строка 1 -->
+                                <tr>
+                                <td>May 24, 2024</td>
+                                <td>Salary Payment</td>
+                                <td>Income</td>
+                                <td>+</td>
+                                <td>$6,000.00</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 2 -->
+                                <tr>
+                                <td>May 23, 2024</td>
+                                <td>Dribbble Pro</td>
+                                <td>Software</td>
+                                <td>-</td>
+                                <td>$12.00</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 3 -->
+                                <tr>
+                                <td>May 22, 2024</td>
+                                <td>Uber Ride</td>
+                                <td>Transport</td>
+                                <td>-</td>
+                                <td>$18.50</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 4 -->
+                                <tr>
+                                <td>May 22, 2024</td>
+                                <td>Grocery Shopping</td>
+                                <td>Food</td>
+                                <td>-</td>
+                                <td>$64.25</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 5 -->
+                                <tr>
+                                <td>May 21, 2024</td>
+                                <td>Freelance Project</td>
+                                <td>Income</td>
+                                <td>+</td>
+                                <td>$1,250.00</td>
+                                <td>● Completed</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <button class="transactions-button">
+                            <div>
+                                <p>View all transactions</p>
+                                <p>-></p>
+                            </div>
+                        </button>
+                    </section>
+                    <section class="card quick-actions-card">
+                        <h2 class="label">Quick actions</h2>
+                        <div class="actions">
+                            <div class="action">
+                                <button class="action_button">
+                                    <div class="action_icon"></div>
+                                    <span>Add income</span>
+                                </button>
+                            </div>
+
+                            <div class="action">
+                                <button class="action_button">
+                                    <div class="action_icon"></div>
+                                    <span>Add expense</span>
+                                </button>
+                            </div>
+
+                            <div class="action">
+                                <button class="action_button">
+                                    <div class="action_icon"></div>
+                                    <span>Transfer</span>
+                                </button>
+                            </div>
+
+                            <div class="action">
+                                <button class="action_button">
+                                    <div class="action_icon"></div>
+                                    <span>New goal</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button class="receipt-button">
+                            <div>
+                                <p>[_]</p>
+                                <p>Scan receipt</p>
+                            </div>
+                        </button>
+
+                    </section>
+                </section>
+            </main>
+
+        </div>
+    </body>
+</html>
