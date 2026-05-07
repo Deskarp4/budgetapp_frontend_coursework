@@ -71,12 +71,18 @@
     padding: 10px;
     min-width: 180px;
     border-radius: 8px;
-    border-color: var(--color-gray-400);
+    border-color: var(--color-gray-300);
+    background-color: var(--color-gray-100);
 }
 
-.date-button div {
+.date-button_content {
     display: flex;
     justify-content: space-between;
+}
+
+.date-button_content div {
+    display: flex;
+    gap: 8px;
 }
 
 /* DASHBOARD  */
@@ -100,7 +106,7 @@
     text-transform: uppercase;
     font-weight: 900;
     font-size: 14px;
-    margin-bottom: 14px;
+    margin-bottom: 4px;
     line-height: 1;
 }
 
@@ -113,13 +119,19 @@
 .amount {
     font-size: 32px;
     line-height: 1;
-    margin-bottom: 8px;
+    /* margin-bottom: 8px; */
     font-weight: bold;
 }
 
 .trend {
     font-weight: 700;
     font-size: 12px;
+}
+
+.trend-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 /* BALANCE CARD */
@@ -133,6 +145,12 @@
     padding: 40px
 }
 
+.balance-card_content {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
 .balance-card_amount-row {
     display: flex;
     flex-direction: row;
@@ -143,8 +161,8 @@
 .balance-card_amount {
     font-size: 52px;
     font-weight: 600;
-    margin-bottom: 8px;
-    margin: 8px 0 16px 0;
+    /* margin-bottom: 8px;
+    margin: 8px 0 16px 0; */
 }
 
 .currency-button {
@@ -158,7 +176,7 @@
 .stats-row {
     display: flex;
     flex-direction: row;
-    margin-top: 32px;
+    margin-top: 14px;
     gap: 64px;
 }
 
@@ -225,7 +243,35 @@
 .income-card,
 .expense-card {
     grid-column: span 4;
-    /* min-height: 260px; */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 260px;
+}
+
+.sparkbar-chart {
+    align-items: flex-end; /* Выстраиваем все столбцы по нижнему краю */
+    gap: 6px;              /* Расстояние между столбцами */
+    height: 40px;          /* Максимальная высота всего графика */
+    display: flex;
+    margin: 8px 0 8px 0;
+}
+
+.bar {
+  /* Скругляем макушки, как на твоем макете */
+  border-radius: 4px; 
+}
+
+/* Стили для толстых черных столбцов */
+.bar-black {
+  width: 4px; 
+  background-color: #000000;
+}
+
+/* Стили для тонких серых столбцов */
+.bar-gray {
+  width: 2px;
+  background-color: #CBD5E1; 
 }
 
 .stats {
@@ -257,7 +303,7 @@
 }
 
 .stats_label {
-    margin: 12px 0 8px 0;
+    /* margin: 12px 0 8px 0; */
 }
 
 .stats_sources, .stats_amount {
@@ -275,13 +321,20 @@
 
 .budget-card {
     grid-column: span 4;
-    /* min-height: 260px; */
+    display: flex;
+    flex-direction: column;
 }
 
 .budget-card_info {
     display: flex;
     justify-content: space-between;
     align-items: center;    
+}
+
+.budget-card_content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .budget-amounts {
@@ -325,7 +378,7 @@
 .reset-time {
     display: flex;
     justify-content: space-between;
-    margin-top: 32px;
+    margin-top: auto;
 }
 
 .reset-time p {
@@ -376,6 +429,7 @@
 .transactions-button div {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     color: var(--color-white);
     text-transform: uppercase;
     font-size: 10px;
