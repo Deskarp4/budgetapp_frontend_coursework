@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -73,7 +74,7 @@
                             <div>
                                 <img src="assets/calendar.svg"
                                 width="17px"
-                                height="17x">
+                                height="17px">
 
                                 <img src="assets/choose_arrow.svg"
                                 width="18px"
@@ -141,30 +142,7 @@
                         </div>
 
                         <div class="sparkbar-chart">
-                        <div class="bar bar-gray" style="height: 30%"></div>
-                        <div class="bar bar-black" style="height: 70%"></div>
-                        <div class="bar bar-gray" style="height: 40%"></div>
-                        <div class="bar bar-black" style="height: 90%"></div>
-                        <div class="bar bar-gray" style="height: 20%"></div>
-                        <div class="bar bar-black" style="height: 50%"></div>
-                        <div class="bar bar-gray" style="height: 80%"></div>
-                        <div class="bar bar-black" style="height: 60%"></div>
-                        <div class="bar bar-gray" style="height: 30%"></div>
-                        <div class="bar bar-black" style="height: 70%"></div>
-                        <div class="bar bar-gray" style="height: 40%"></div>
-                        <div class="bar bar-black" style="height: 90%"></div>
-                        <div class="bar bar-gray" style="height: 20%"></div>
-                        <div class="bar bar-black" style="height: 50%"></div>
-                        <div class="bar bar-gray" style="height: 80%"></div>
-                        <div class="bar bar-black" style="height: 60%"></div>
-                        <div class="bar bar-gray" style="height: 30%"></div>
-                        <div class="bar bar-black" style="height: 70%"></div>
-                        <div class="bar bar-gray" style="height: 40%"></div>
-                        <div class="bar bar-black" style="height: 90%"></div>
-                        <div class="bar bar-gray" style="height: 20%"></div>
-                        <div class="bar bar-black" style="height: 50%"></div>
-                        <div class="bar bar-gray" style="height: 80%"></div>
-                        <div class="bar bar-black" style="height: 60%"></div>
+                            <canvas id="incomeChart"></canvas>
                         </div>
 
                         <p class="label-mini stats_label">Top sources</p>
@@ -211,32 +189,8 @@
                             height="12px">
                             <p class="trend">-8,2% from last month</p>
                         </div>
-
                         <div class="sparkbar-chart">
-                        <div class="bar bar-gray" style="height: 30%"></div>
-                        <div class="bar bar-black" style="height: 70%"></div>
-                        <div class="bar bar-gray" style="height: 40%"></div>
-                        <div class="bar bar-black" style="height: 90%"></div>
-                        <div class="bar bar-gray" style="height: 20%"></div>
-                        <div class="bar bar-black" style="height: 50%"></div>
-                        <div class="bar bar-gray" style="height: 80%"></div>
-                        <div class="bar bar-black" style="height: 60%"></div>
-                        <div class="bar bar-gray" style="height: 30%"></div>
-                        <div class="bar bar-black" style="height: 70%"></div>
-                        <div class="bar bar-gray" style="height: 40%"></div>
-                        <div class="bar bar-black" style="height: 90%"></div>
-                        <div class="bar bar-gray" style="height: 20%"></div>
-                        <div class="bar bar-black" style="height: 50%"></div>
-                        <div class="bar bar-gray" style="height: 80%"></div>
-                        <div class="bar bar-black" style="height: 60%"></div>
-                        <div class="bar bar-gray" style="height: 30%"></div>
-                        <div class="bar bar-black" style="height: 70%"></div>
-                        <div class="bar bar-gray" style="height: 40%"></div>
-                        <div class="bar bar-black" style="height: 90%"></div>
-                        <div class="bar bar-gray" style="height: 20%"></div>
-                        <div class="bar bar-black" style="height: 50%"></div>
-                        <div class="bar bar-gray" style="height: 80%"></div>
-                        <div class="bar bar-black" style="height: 60%"></div>
+                            <canvas id="expenseChart"></canvas>
                         </div>
 
                         <p class="label-mini stats_label">Top categories</p>
@@ -274,13 +228,24 @@
 
                     <section class="card budget-card">
                         <h2 class="label">Budget status</h2>
-                        <div class="budget-card_content">
                             <div class="budget-card_info">
-                                <div class="progress-circle">
-                                    <div>
-                                        <strong>72%</strong>
-                                        <span>Used</span>
-                                    </div>
+                                <!-- <div class="progress-circle">
+                                    
+                                </div> -->
+                                
+                                <div class="circle-progress">
+                                    <!-- <canvas id="budgetProgress"></canvas> -->
+                                     <div class="circle-progress_outer">
+                                        <div class="circle-progress_inner">
+                                            <div class="circle-progress_stat">
+                                                <strong id="circleProgressAmount">50%</strong>
+                                                <span>Used</span>
+                                            </div>
+                                        </div>
+                                     </div>
+                                    <svg width="180px" height="180px">
+                                        <circle cx="90" cy="90" r="81.5"></circle>
+                                    </svg>
                                 </div>
 
                                 <div class="budget-amounts">
@@ -293,13 +258,12 @@
                                         <p class="label-mini">Total budget</p>
                                     </div>
                                 </div>
-                                
+
                             </div>
                             <div class="reset-time">
                                 <p class="label-mini">Reset in</p>
                                 <time>15D : 08H : 42M</time>
                             </div>
-                        </div>
                     </section>
 
                     <section class="card transactions-card">
@@ -439,5 +403,7 @@
             </main>
 
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="main.js"></script>
     </body>
 </html>

@@ -455,6 +455,7 @@
     height: 40px;          /* Максимальная высота всего графика */
     display: flex;
     margin: 8px 0 8px 0;
+    max-width: 240px;
 }
 
 .bar {
@@ -502,10 +503,6 @@
     flex-grow: 1;
 }
 
-.stats_label {
-    /* margin: 12px 0 8px 0; */
-}
-
 .stats_sources, .stats_amount {
     display: flex;
     flex-direction: column;
@@ -523,6 +520,7 @@
     grid-column: span 4;
     display: flex;
     flex-direction: column;
+    gap: 10px;
 }
 
 .budget-card_info {
@@ -543,33 +541,59 @@
     gap: 16px;
 }
 
-.progress-circle {
-    border-radius: 50%;
-    background: conic-gradient(#000 72%, #eee 0);
-    width: 150px;
-    height: 150px;
+.circle-progress {
+    width: 180px;
+    height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 12px;
+    position: relative;
 }
 
-.progress-circle div {
+.circle-progress_outer {
+    /* border: 1px solid red; */
+    border-radius: 50%;
+    width: 180px;
+    height: 180px;
+    padding: 17px;
+}
+
+.circle-progress_inner {
+    /* border: 1px solid red; */
+    border-radius: 50%;
+    width: 146px;
+    height: 146px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-progress svg {
+    position: absolute;
+}
+
+.circle-progress circle {
+    fill: none;
+    stroke: black;
+    stroke-width: 17;
+    stroke-dasharray: 512.15;
+    stroke-dashoffset: 512.15;
+    stroke-linecap: round;
+    animation: progress 1s ease forwards;
+}
+
+.circle-progress_stat {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: var(--color-white);
+    align-items: center;
 }
 
-.progress-circle div strong {
+.circle-progress_stat strong {
     font-size: 36px;
 }
 
-.progress-circle div span {
+.circle-progress_stat span {
     font-weight: 600;
     text-transform: uppercase;
     font-size: 14px;
