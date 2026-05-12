@@ -3,6 +3,8 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Monyx Dashboard</title>
         <link rel="stylesheet" href="css/reset.css">
         <link rel="stylesheet" href="css/variables.css">
         <link rel="stylesheet" href="css/style.css">
@@ -46,14 +48,18 @@
                         <span>Total balance</span>
                         <strong class="sidebar-card_balance">$24,530.80</strong>
                         <span>USD</span>
+                        <div class="sidebar-chart">
+                            <canvas id="lineChart"></canvas>
+                        </div>
+
                     </div>
 
-                    <div class="sidebar-card">
+                    <!-- <div class="sidebar-card">
                         <div class="sidebar-card_borders"></div>
                         <span>System status</span>
                         <span>Sync</span>
                         <span>Online</span>
-                    </div>
+                    </div> -->
 
                     <div class="sidebar-card">
                         <div class="sidebar-card_borders"></div>
@@ -65,7 +71,6 @@
             </aside>
 
             <main class="main">
-
                 <header class="topbar">
                     <h1>Dashboard</h1>
                     <button class="date-button">
@@ -85,8 +90,11 @@
                 </header>
 
                 <section class="dashboard">
+
                     <section class="card balance-card">
-                        <div class="balance-card_content">
+
+                        <!-- <div class="balance-card_content"> -->
+                        <div class="balance-card_info">
                             <h2 class="label">Total balance</h2>
                             <div class="balance-card_amount-row">
                             <p class="amount balance-card_amount">$24,530.80</p>
@@ -123,13 +131,21 @@
                                     </div>
                                 </div>
                             </div>
+                        <!-- </div> -->
+                        <!-- <div class="budget-sparkline">
+                            <canvas id="budgetChart"></canvas>
+                        </div> -->
                         </div>
-                        
+
                         <div class="balance-card-visual">
-                            <img src="./assets/balance_card_image.png">
+                            <img src="./assets/balance_card_image.png" alt="Monyx balance card">
                         </div>
                     </section>
                     
+                    <!-- <section class="card cashflow-card">
+
+                    </section> -->
+
                     <section class="card income-card">
                         <h2 class="label">Income</h2>
                         <p class="amount">$32,450.00</p>
@@ -222,6 +238,7 @@
                                 </div>
                                 <div class="progress-bar cashflow-card_progress">
                                     <div class="progress-bar_value"></div>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -238,13 +255,20 @@
                                      <div class="circle-progress_outer">
                                         <div class="circle-progress_inner">
                                             <div class="circle-progress_stat">
-                                                <strong id="circleProgressAmount">50%</strong>
+                                                <strong id="circleProgressAmount">53%</strong>
                                                 <span>Used</span>
                                             </div>
                                         </div>
                                      </div>
                                     <svg width="180px" height="180px">
-                                        <circle cx="90" cy="90" r="81.5"></circle>
+                                        <defs>
+                                            <linearGradient id="circleLinearGradient" x1="50%" y1="100%" x2="100%" y2="0%">
+                                                <stop offset="0%" stop-color="hsl(0, 0%, 85%)"></stop>
+                                                <stop offset="100%" stop-color="hsl(0, 0%, 98%)"></stop>
+                                            </linearGradient>
+                                        </defs>
+                                        <circle class="circle-background" cx="90" cy="90" r="81.5"></circle>
+                                        <circle class="circle-figure" cx="90" cy="90" r="81.5"></circle>
                                     </svg>
                                 </div>
 
@@ -282,52 +306,52 @@
                             <tbody>
                                 <!-- Строка 1 -->
                                 <tr>
-                                <td>May 24, 2024</td>
-                                <td>Salary Payment</td>
-                                <td>Income</td>
-                                <td>+</td>
-                                <td>$6,000.00</td>
-                                <td>● Completed</td>
+                                <td data-label="Date">May 24, 2024</td>
+                                <td data-label="Description">Salary Payment</td>
+                                <td data-label="Category">Income</td>
+                                <td data-label="Type">+</td>
+                                <td data-label="Amount">$6,000.00</td>
+                                <td data-label="Status"><span class="transaction-status">Completed</span></td>
                                 </tr>
 
                                 <!-- Строка 2 -->
                                 <tr>
-                                <td>May 23, 2024</td>
-                                <td>Dribbble Pro</td>
-                                <td>Software</td>
-                                <td>-</td>
-                                <td>$12.00</td>
-                                <td>● Completed</td>
+                                <td data-label="Date">May 23, 2024</td>
+                                <td data-label="Description">Dribbble Pro</td>
+                                <td data-label="Category">Software</td>
+                                <td data-label="Type">-</td>
+                                <td data-label="Amount">$12.00</td>
+                                <td data-label="Status"><span class="transaction-status">Completed</span></td>
                                 </tr>
 
                                 <!-- Строка 3 -->
                                 <tr>
-                                <td>May 22, 2024</td>
-                                <td>Uber Ride</td>
-                                <td>Transport</td>
-                                <td>-</td>
-                                <td>$18.50</td>
-                                <td>● Completed</td>
+                                <td data-label="Date">May 22, 2024</td>
+                                <td data-label="Description">Uber Ride</td>
+                                <td data-label="Category">Transport</td>
+                                <td data-label="Type">-</td>
+                                <td data-label="Amount">$18.50</td>
+                                <td data-label="Status"><span class="transaction-status">Completed</span></td>
                                 </tr>
 
                                 <!-- Строка 4 -->
                                 <tr>
-                                <td>May 22, 2024</td>
-                                <td>Grocery Shopping</td>
-                                <td>Food</td>
-                                <td>-</td>
-                                <td>$64.25</td>
-                                <td>● Completed</td>
+                                <td data-label="Date">May 22, 2024</td>
+                                <td data-label="Description">Grocery Shopping</td>
+                                <td data-label="Category">Food</td>
+                                <td data-label="Type">-</td>
+                                <td data-label="Amount">$64.25</td>
+                                <td data-label="Status"><span class="transaction-status">Completed</span></td>
                                 </tr>
 
                                 <!-- Строка 5 -->
                                 <tr>
-                                <td>May 21, 2024</td>
-                                <td>Freelance Project</td>
-                                <td>Income</td>
-                                <td>+</td>
-                                <td>$1,250.00</td>
-                                <td>● Completed</td>
+                                <td data-label="Date">May 21, 2024</td>
+                                <td data-label="Description">Freelance Project</td>
+                                <td data-label="Category">Income</td>
+                                <td data-label="Type">+</td>
+                                <td data-label="Amount">$1,250.00</td>
+                                <td data-label="Status"><span class="transaction-status">Completed</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -348,9 +372,11 @@
                                 <button class="action_button">
                                     <div class="action_icon">
                                         <img src="assets/plus.svg"
-                                        width="24px"
-                                        height="24px">
+                                        width="36"
+                                        height="36">
+                                        <div class="action_icon_border"></div>
                                     </div>
+
                                     <span>Add income</span>
                                 </button>
                             </div>
@@ -359,9 +385,11 @@
                                 <button class="action_button">
                                     <div class="action_icon">
                                         <img src="assets/minus.svg"
-                                        width="24px"
-                                        height="24px">
+                                        width="36"
+                                        height="36">
+                                        <div class="action_icon_border"></div>
                                     </div>
+
                                     <span>Add expense</span>
                                 </button>
                             </div>
@@ -370,9 +398,11 @@
                                 <button class="action_button">
                                     <div class="action_icon">
                                         <img src="assets/transaction_action.svg"
-                                        width="24px"
-                                        height="24px">
+                                        width="32"
+                                        height="32">
+                                        <div class="action_icon_border"></div>
                                     </div>
+
                                     <span>Transfer</span>
                                 </button>
                             </div>
@@ -381,22 +411,24 @@
                                 <button class="action_button">
                                     <div class="action_icon">
                                         <img src="assets/goal.svg"
-                                        width="24px"
-                                        height="24px">
+                                        width="32"
+                                        height="32">
+                                        <div class="action_icon_border"></div>
                                     </div>
+
                                     <span>New goal</span>
                                 </button>
                             </div>
                         </div>
 
-                        <button class="receipt-button">
+                        <!-- <button class="receipt-button">
                             <div>
                                 <img src="assets/scan.svg"
                                 width="28px"
                                 height="28px">
                                 <p>Scan receipt</p>
                             </div>
-                        </button>
+                        </button> -->
 
                     </section>
                 </section>
