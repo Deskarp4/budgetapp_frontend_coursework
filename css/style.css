@@ -760,9 +760,7 @@
 }
 
 
-/* QUICK TRANSACTIONS CARD  */
-
-/* QUICK TRANSACTIONS CARD  */
+/* QUICK ACTIONS CARD  */
 
 .quick-actions-card {
     grid-column: span 4;
@@ -886,5 +884,35 @@
 
     .quick-actions-card {
         position: relative;
+    }
+
+    .action_icon {
+        width: 80px;
+        height: 80px;
+    }
+
+    .action_icon img {
+        width: 42px;
+        height: 42px;
+    }
+
+    .action_button {
+        font-size: 11px;
+    }
+}
+
+@media (min-width: 2560px) {
+    .action_icon {
+        width: 100px;
+        height: 100px;
+    }
+
+    .action_icon img {
+        width: 48px;
+        height: 48px;
+    }
+
+    .action_button {
+        font-size: 12px;
     }
 }

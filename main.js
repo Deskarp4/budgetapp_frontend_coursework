@@ -178,54 +178,54 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     
-const balanceCard = document.querySelector(".balance-card");
-const sphereImage = document.querySelector(".sphere-image");
+    const balanceCard = document.querySelector(".balance-card");
+    const sphereImage = document.querySelector(".sphere-image");
 
-if (balanceCard && sphereImage) {
-const baseWindowWidth = 1650;
-let currentX = 0;
-let currentScale = 1;
-let isFirstFrame = true;
-let frameCount = 0; // Добавляем счетчик кадров
-function clamp(value, min, max) {
-    return Math.min(Math.max(value, min), max);
-}
-function animateSphere() {
-    try {
-        frameCount++;
-        
-        const extraWidth = Math.max(window.innerWidth - baseWindowWidth, 0);
-        const scaleProgress = clamp(extraWidth / 500, 0, 1.576);
-        
-        const targetX = extraWidth * 1.15; 
-        const targetScale = 1 + scaleProgress * 1;
-
-        if (isFirstFrame) {
-            currentX = targetX;
-            currentScale = targetScale;
-            isFirstFrame = false;
-        }
-
-        const inertia = 0.02;
-        currentX += (targetX - currentX) * inertia;
-        currentScale += (targetScale - currentScale) * inertia;
-
-        // Применяем стили
-        sphereImage.style.transform = `translate3d(${currentX.toFixed(2)}px, 0, 0) scale(${currentScale.toFixed(3)})`;
-        
-        console.log(`[Кадр ${frameCount}] Отработал успешно`);
-        
-        requestAnimationFrame(animateSphere);
-        
-    } catch (error) {
-        // ЕСЛИ ЦИКЛ УПАДЕТ, МЫ УВИДИМ ЭТО ЗДЕСЬ:
-        console.error("🚨 ЦИКЛ УБИТ ОШИБКОЙ:", error.message);
-        console.error(error.stack);
+    if (balanceCard && sphereImage) {
+    const baseWindowWidth = 1650;
+    let currentX = 0;
+    let currentScale = 1;
+    let isFirstFrame = true;
+    let frameCount = 0; // Добавляем счетчик кадров
+    function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
     }
-}
+    function animateSphere() {
+        try {
+            frameCount++;
+            
+            const extraWidth = Math.max(window.innerWidth - baseWindowWidth, 0);
+            const scaleProgress = clamp(extraWidth / 500, 0, 1.576);
+            
+            const targetX = extraWidth * 1.15; 
+            const targetScale = 1 + scaleProgress * 1;
 
-    animateSphere();
-}
+            if (isFirstFrame) {
+                currentX = targetX;
+                currentScale = targetScale;
+                isFirstFrame = false;
+            }
+
+            const inertia = 0.02;
+            currentX += (targetX - currentX) * inertia;
+            currentScale += (targetScale - currentScale) * inertia;
+
+            // Применяем стили
+            sphereImage.style.transform = `translate3d(${currentX.toFixed(2)}px, 0, 0) scale(${currentScale.toFixed(3)})`;
+            
+            console.log(`[Кадр ${frameCount}] Отработал успешно`);
+            
+            requestAnimationFrame(animateSphere);
+            
+        } catch (error) {
+            // ЕСЛИ ЦИКЛ УПАДЕТ, МЫ УВИДИМ ЭТО ЗДЕСЬ:
+            console.error("🚨 ЦИКЛ УБИТ ОШИБКОЙ:", error.message);
+            console.error(error.stack);
+        }
+    }
+
+        animateSphere();
+    }
 
 
 });
