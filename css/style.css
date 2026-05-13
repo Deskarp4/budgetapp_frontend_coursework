@@ -1,28 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 
-html {
-    min-width: 320px;
-}
-
-img,
-canvas {
-    max-width: 100%;
-}
-
-canvas {
-    display: block;
-}
-
-button {
-    font: inherit;
-    cursor: pointer;
-}
-
 .app {
     display: grid;
-    grid-template-columns: minmax(260px, var(--sidebar-width)) minmax(0, 1fr);
+    grid-template-columns: var(--sidebar-width) 1fr;
     min-height: 100vh;
-    overflow-x: hidden;
 }
 
 /* SIDEBAR  */
@@ -38,8 +19,6 @@ button {
     left: 0;
     top: 0;
     height: 100vh;
-    min-width: 0;
-    overflow-y: auto;
 }
 
 .sidebar::before,
@@ -115,7 +94,7 @@ button {
 }
 
 .sidebar-card_balance {
-    font-size: clamp(18px, 1.6vw, 22px);
+    font-size: 22px;
     font-weight: 500;
 }
 
@@ -174,7 +153,6 @@ button {
     text-transform: uppercase;
     font-size: 12px;
     border: 1px solid transparent;
-    min-width: 0;
 }
 
 .sidebar-item:hover {
@@ -268,7 +246,7 @@ button {
     align-items: center;
     gap: 12px;
     padding: 48px 0 48px 18px;
-    font-size: clamp(22px, 2vw, 26px);
+    font-size: 26px;
     font-weight: 700;
     position: relative;
 }
@@ -276,8 +254,7 @@ button {
 /* MAIN  */
 
 .main {
-    margin: clamp(12px, 2vw, 24px);
-    min-width: 0;
+    margin: 24px;
     /* display: flex;
     justify-content: center;
     align-items: center;
@@ -290,7 +267,6 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 16px;
     margin: 0 12px 24px 12px;
 }
 
@@ -302,7 +278,7 @@ button {
 
 .date-button {
     padding: 10px 14px;
-    min-width: min(180px, 100%);
+    min-width: 180px;
     border-radius: 8px;
     border-color: var(--color-gray-300);
     background-color: var(--color-gray-100);
@@ -324,9 +300,8 @@ button {
 
 .dashboard {
     display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-auto-flow: dense;
-    gap: clamp(12px, 1.6vw, 20px);
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
     /* max-width: 1252px;
     margin: auto; */
 }
@@ -336,9 +311,8 @@ button {
 .card {
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-card);
-    padding: clamp(18px, 2.2vw, 28px);
+    padding: 28px;
     background: var(--color-white);
-    min-width: 0;
 }
 
 .label {
@@ -356,10 +330,9 @@ button {
 }
 
 .amount {
-    font-size: clamp(26px, 3vw, 32px);
+    font-size: 32px;
     line-height: 1;
     font-weight: bold;
-    overflow-wrap: anywhere;
 }
 
 .trend {
@@ -385,14 +358,11 @@ button {
 
 .balance-card {
     grid-column: span 12;
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(240px, 0.85fr);
-    align-items: center;
-    gap: clamp(20px, 4vw, 56px);
+    display: flex;
+    justify-content: space-between;
     position: relative;
-    min-height: clamp(280px, 24vw, 340px);
-    padding: clamp(24px, 3vw, 40px);
-    overflow: hidden;
+    min-height: 300px;
+    padding: 40px;
 }
 
 .budget-sparkline {
@@ -410,8 +380,6 @@ button {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    min-width: 0;
-    position: relative;
     z-index: 1;
 }
 
@@ -419,12 +387,11 @@ button {
     display: flex;
     flex-direction: row;
     align-items: center;
-    flex-wrap: wrap;
     gap: 16px;
 }
 
 .balance-card_amount {
-    font-size: clamp(36px, 4.8vw, 52px);
+    font-size: 52px;
     font-weight: 600    ;
     /* margin-bottom: 8px;
     margin: 8px 0 16px 0; */
@@ -439,11 +406,10 @@ button {
 }
 
 .stats-row {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: flex;
+    flex-direction: row;
     margin-top: 14px;
-    gap: clamp(18px, 3vw, 64px);
-    max-width: 660px;
+    gap: 64px;
 }
 
 .stat {
@@ -457,7 +423,7 @@ button {
 .stat::after{
     content: "";
     position: absolute;
-    right: clamp(-32px, -1.5vw, -9px);
+    right: -32px;
     top: 50%;
     width: 1px;
     height: 95%;
@@ -470,7 +436,7 @@ button {
 }
 
 .progress-bar {
-    width: min(140px, 100%);
+    width: 140px;
     height: 6px;
     box-sizing: content-box;
     box-shadow: inset 0 0 0 1px var(--color-gray-300);
@@ -492,24 +458,17 @@ button {
 }
 
 .cashflow-card_progress {
-    width: min(110px, 100%);
-}
-
-.balance-card-visual {
-    align-self: stretch;
-    min-height: 220px;
-    min-width: 0;
-    position: relative;
+    width: 110px;
 }
 
 .balance-card-visual img {
-    width: min(520px, 122%);
-    max-width: none;
-    height: auto;
-    display: block;
-    position: absolute;
-    right: clamp(-64px, -4vw, -12px);
-    bottom: -36px;
+  width: 520px;
+  height: auto;
+  display: block;
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+  z-index: 0;
 }
 
 /* CASHFLOW CARD */
@@ -535,8 +494,7 @@ button {
     height: 40px;          /* Максимальная высота всего графика */
     display: flex;
     margin: 8px 0 8px 0;
-    width: 100%;
-    max-width: 280px;
+    max-width: 240px;
 }
 
 .bar {
@@ -608,7 +566,6 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: center;    
-    gap: 18px;
 }
 
 .budget-card_content {
@@ -621,7 +578,6 @@ button {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    min-width: max-content;
 }
 
 .circle-progress {
@@ -710,7 +666,6 @@ button {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    overflow: hidden;
 }
 
 .transactions-table {
@@ -738,27 +693,11 @@ button {
     padding: 16px 8px 0px 0;
 }
 
-.transaction-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-}
-
-.transaction-status::before {
-    content: "";
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--color-black);
-    flex: 0 0 auto;
-}
-
 .transactions-button {
     background: var(--color-black);
     border-radius: var(--radius-md);
     padding: 16px;
-    width: min(260px, 100%);
+    width: 260px;
     margin-top: 14px;
 }
 
@@ -788,7 +727,7 @@ button {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     place-items: center;
-    gap: clamp(14px, 2vw, 24px);
+    gap: 24px;
 }
 
 .action_button {
@@ -797,16 +736,15 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 18px;
+    gap: 24px;
     font-size: 9px;
     font-weight: 500;
     text-transform: uppercase;
-    width: 100%;
 }
 
 .action_icon {
-    width: clamp(58px, 6vw, 68px);
-    height: clamp(58px, 6vw, 68px);
+    width: 68px;
+    height: 68px;
     border: 1px solid transparent;
 
     display: flex;
@@ -887,324 +825,3 @@ button {
     letter-spacing: 2px;
 }
 
-@media (max-width: 1400px) {
-    .income-card,
-    .expense-card,
-    .budget-card,
-    .quick-actions-card {
-        grid-column: span 6;
-    }
-
-    .transactions-card {
-        grid-column: span 12;
-    }
-
-    .quick-actions-card {
-        gap: 18px;
-    }
-
-    .quick-actions-card .actions {
-        grid-template-columns: repeat(4, minmax(64px, 1fr));
-    }
-}
-
-@media (max-width: 1180px) {
-    .app {
-        grid-template-columns: 1fr;
-    }
-
-    .sidebar {
-        z-index: 20;
-        height: auto;
-        max-height: none;
-        display: grid;
-        grid-template-columns: auto minmax(0, 1fr);
-        align-items: center;
-        gap: 16px 20px;
-        padding: 16px;
-        overflow: visible;
-    }
-
-    .sidebar::before {
-        top: 16px;
-        left: 16px;
-    }
-
-    .sidebar::after {
-        top: 16px;
-        right: 16px;
-    }
-
-    .logo {
-        padding: 0 0 0 12px;
-    }
-
-    .logo svg {
-        width: 38px;
-        height: 38px;
-        flex: 0 0 auto;
-    }
-
-    .sidebar-nav {
-        flex-direction: row;
-        justify-content: flex-end;
-        gap: 10px;
-        overflow-x: auto;
-        scrollbar-width: none;
-    }
-
-    .sidebar-nav::-webkit-scrollbar {
-        display: none;
-    }
-
-    .sidebar-item {
-        min-height: 42px;
-        padding: 10px 14px;
-        white-space: nowrap;
-        flex: 0 0 auto;
-    }
-
-    .sidebar-cards {
-        grid-column: 1 / -1;
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-        margin-top: 0;
-    }
-
-    .sidebar-card {
-        min-height: auto;
-        padding: 12px;
-    }
-
-    .sidebar-chart {
-        height: 34px;
-    }
-}
-
-@media (max-width: 920px) {
-    .topbar {
-        margin-inline: 0;
-    }
-
-    .balance-card {
-        grid-template-columns: 1fr;
-        align-items: start;
-        min-height: auto;
-        padding-bottom: 0;
-    }
-
-    .balance-card-visual {
-        min-height: clamp(170px, 34vw, 260px);
-        margin-inline: clamp(-40px, -3vw, -24px);
-    }
-
-    .balance-card-visual img {
-        width: min(540px, 96%);
-        max-width: 96%;
-        right: 50%;
-        bottom: -28px;
-        transform: translateX(50%);
-    }
-
-    .stats-row {
-        gap: 16px;
-    }
-
-    .stat::after {
-        display: none;
-    }
-
-    .budget-card_info {
-        align-items: flex-start;
-    }
-}
-
-@media (max-width: 720px) {
-    .main {
-        margin: 12px;
-    }
-
-    .topbar {
-        flex-direction: column;
-        align-items: stretch;
-        margin-bottom: 16px;
-    }
-
-    .date-button {
-        width: 100%;
-    }
-
-    .dashboard {
-        grid-template-columns: 1fr;
-    }
-
-    .balance-card,
-    .income-card,
-    .expense-card,
-    .budget-card,
-    .transactions-card,
-    .quick-actions-card {
-        grid-column: 1;
-    }
-
-    .balance-card_amount {
-        font-size: clamp(32px, 10vw, 42px);
-    }
-
-    .stats-row {
-        grid-template-columns: 1fr;
-        margin-top: 8px;
-    }
-
-    .stat {
-        padding-top: 12px;
-        border-top: 1px solid var(--color-gray-200);
-    }
-
-    .stat:first-child {
-        padding-top: 0;
-        border-top: 0;
-    }
-
-    .progress-bar,
-    .cashflow-card_progress {
-        width: 100%;
-    }
-
-    .budget-card_info {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .circle-progress {
-        align-self: center;
-    }
-
-    .budget-amounts {
-        min-width: 0;
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .transactions-table thead {
-        display: none;
-    }
-
-    .transactions-table,
-    .transactions-table tbody,
-    .transactions-table tr,
-    .transactions-table td {
-        display: block;
-        width: 100%;
-    }
-
-    .transactions-table tr {
-        padding: 12px 0;
-        border-bottom: 1px solid var(--color-gray-200);
-    }
-
-    .transactions-table tr:last-child {
-        border-bottom: 0;
-    }
-
-    .transactions-table td {
-        display: grid;
-        grid-template-columns: minmax(92px, 0.8fr) minmax(0, 1.2fr);
-        gap: 12px;
-        align-items: center;
-        padding: 6px 0;
-    }
-
-    .transactions-table td::before {
-        content: attr(data-label);
-        color: var(--color-gray-600);
-        font-size: 10px;
-        font-weight: 800;
-        text-transform: uppercase;
-    }
-
-    .transactions-button {
-        width: 100%;
-    }
-
-    .quick-actions-card .actions {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
-@media (max-width: 560px) {
-    .sidebar {
-        grid-template-columns: 1fr;
-        gap: 14px;
-    }
-
-    .logo {
-        padding-left: 8px;
-    }
-
-    .sidebar-nav {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        justify-content: stretch;
-        overflow: visible;
-    }
-
-    .sidebar-item {
-        justify-content: center;
-        gap: 10px;
-        padding-inline: 10px;
-    }
-
-    .sidebar-item_dot {
-        display: none;
-    }
-
-    .sidebar-cards {
-        grid-template-columns: 1fr;
-    }
-
-    .card {
-        border-radius: 16px;
-        padding: 16px;
-    }
-
-    .balance-card {
-        padding: 20px 18px 0;
-    }
-
-    .balance-card-visual {
-        min-height: 155px;
-        margin-inline: -18px;
-    }
-
-    .top-row {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-    }
-
-    .reset-time {
-        flex-direction: column;
-        gap: 4px;
-    }
-}
-
-@media (max-width: 380px) {
-    .logo_icon {
-        font-size: 21px;
-    }
-
-    .sidebar-item {
-        font-size: 10px;
-    }
-
-    .balance-card_amount {
-        font-size: 30px;
-    }
-
-    .transactions-table td {
-        grid-template-columns: 1fr;
-        gap: 2px;
-    }
-}

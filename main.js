@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function createSparkline(canvasId, dataValues) {
         const canvas = document.getElementById(canvasId);
-        if (!canvas || typeof Chart === "undefined") return null;
 
         return new Chart(canvas, {
             type: 'bar',
@@ -45,9 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         };
 
-    function createCircleProgress(canvasId, value) {
+    function createCircleProgress(canvasId, dataValues) {
         const canvas = document.getElementById(canvasId);
-        if (!canvas || typeof Chart === "undefined") return null;
 
         const backgroundTrackPLugin = {
             id: "backgroundTrack",
@@ -112,7 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function createLineChart(canvasId, dataValues) {
         const canvas = document.getElementById(canvasId);
-        if (!canvas || typeof Chart === "undefined") return null;
 
         const data = {
         labels: dataValues,
@@ -149,46 +146,45 @@ document.addEventListener('DOMContentLoaded', function() {
 
     }
 
-function createBudgetSparkline(canvasId, dataValues) {
-        const canvas = document.getElementById(canvasId);
-        if (!canvas || typeof Chart === "undefined") return null;
+    function createBudgetSparkline(canvasId, dataValues) {
+            const canvas = document.getElementById(canvasId);
 
-        return new Chart(canvas, {
-            type: 'bar',
+            return new Chart(canvas, {
+                type: 'bar',
 
-            data: {
-                labels: dataValues.map((_, index) => index),
-                datasets: [
-                    {
-                        data: dataValues,
-                        barThickness: "15",
-                        backgroundColor: (context) => {return context.dataIndex % 2 == 0 ? "#d4d4d4" : "#050505";},
-                        barPercentage: 1,
-                        borderRadius: 3,
-                        borderSkipped: false,
-                    }
-                ]
-            },
-
-            options: {
-                responsive: true,
-                scales: {
-                x: { display: false },
-                y: { display: false }
+                data: {
+                    labels: dataValues.map((_, index) => index),
+                    datasets: [
+                        {
+                            data: dataValues,
+                            barThickness: "15",
+                            backgroundColor: (context) => {return context.dataIndex % 2 == 0 ? "#d4d4d4" : "#050505";},
+                            barPercentage: 1,
+                            borderRadius: 3,
+                            borderSkipped: false,
+                        }
+                    ]
                 },
-                plugins: {
-                    legend: {display: false}
-                },
-                maintainAspectRatio: false,
-                layout: {
-                    padding: {
-                        bottom: 1
-                    }
-                },
-            },
 
-        })
-        };
+                options: {
+                    responsive: true,
+                    scales: {
+                    x: { display: false },
+                    y: { display: false }
+                    },
+                    plugins: {
+                        legend: {display: false}
+                    },
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            bottom: 1
+                        }
+                    },
+                },
+
+            })
+    };
 
     const budgetDataValues = [65, 59, 80, 100, 70, 20, 12,]
     const sidebarDataValues = [65, 59, 80, 100, 70, 20, 0, 55, 42, 36];
@@ -205,7 +201,6 @@ function createBudgetSparkline(canvasId, dataValues) {
     
     
     const circle = document.querySelector(".circle-figure");
-    if (!circle) return;
     const styles = getComputedStyle(circle);
     const circleLength = circle.getTotalLength();;
     circle.style.setProperty("stroke-dasharray", circleLength)
@@ -214,6 +209,65 @@ function createBudgetSparkline(canvasId, dataValues) {
     requestAnimationFrame(() => {
         circle.style.transition = "stroke-dashoffset 1s ease";
         circle.style.strokeDashoffset = circleLength - (circleLength * value / 100);
-});
+    });
+
+
+//     const sphere = document.querySelector('.sphere-image');
+
+//     // 1. Задаем переменные
+//     // Целевые значения (куда стремимся)
+//     let targetX = 0; 
+//     let targetScale = 1;
+
+//     // Текущие значения (где сфера находится прямо сейчас)
+//     let currentX = 0;
+//     let currentScale = 1;
+
+// // 2. Функция, которая считает "цель" при ресайзе окна
+//     function updateTargetValues() {
+//     const windowWidth = window.innerWidth;
+    
+//     // Задаем точки отсчета (например, от мобилки до Full HD)
+//     const minWidth = 768; 
+//     const maxWidth = 1920;
+    
+//     // Считаем прогресс от 0 до 1
+//     let progress = (windowWidth - minWidth) / (maxWidth - minWidth);
+//     progress = Math.max(0, Math.min(1, progress)); // Не даем выйти за рамки 0 и 1
+
+//     // НАСТРОЙКИ "РЕЛЬСОВ":
+//     // Насколько сильно двигать влево (например, до -150px)
+//     targetX = progress * -150; 
+    
+//     // Насколько сильно увеличивать (например, от масштаба 1 до 1.5)
+//     targetScale = 1 + (progress * 0.5); 
+//     }
+
+// // Пересчитываем цели при ресайзе
+//     window.addEventListener('resize', updateTargetValues);
+
+//     // Вызываем один раз при старте, чтобы задать начальную позицию
+//     updateTargetValues();
+
+//     // 3. Цикл анимации (тот самый LERP для плавности)
+//     function animate() {
+//     // Коэффициент 0.08 отвечает за "тяжесть" сферы. 
+//     // Чем меньше (например, 0.03), тем больше инерция и плавность.
+//     const ease = 0.02; 
+
+//     currentX += (targetX - currentX) * ease;
+//     currentScale += (targetScale - currentScale) * ease;
+
+//     // Применяем значения к картинке. 
+//     // translate3d включает аппаратное ускорение видеокарты
+//     sphere.style.transform = `translate(-50%, -50%) translate3d(${currentX}px, 0, 0) scale(${currentScale})`;
+
+//     // Зацикливаем
+//     requestAnimationFrame(animate);
+//     }
+
+//     // Запускаем анимацию
+//     animate();
+
 
 });
