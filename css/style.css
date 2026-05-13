@@ -359,10 +359,11 @@
 .balance-card {
     grid-column: span 12;
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     position: relative;
     min-height: 300px;
     padding: 40px;
+    overflow: hidden;
 }
 
 .budget-sparkline {
@@ -461,14 +462,20 @@
     width: 110px;
 }
 
-.balance-card-visual img {
-  width: 520px;
-  height: auto;
-  display: block;
-  position: absolute;
-  right: 10px;
-  bottom: 0;
-  z-index: 0;
+.balance-card-visual {
+    left: calc(100% - 530px);
+    margin-left: 100px;
+}
+
+.sphere-image {
+    width: 500px;
+    height: auto;
+    display: block;
+    position: absolute;
+    bottom: 0;
+    z-index: 0;
+    will-change: transform;
+    transform-origin: right top;
 }
 
 /* CASHFLOW CARD */
@@ -494,7 +501,8 @@
     height: 40px;          /* Максимальная высота всего графика */
     display: flex;
     margin: 8px 0 8px 0;
-    max-width: 240px;
+    /* max-width: 240px; */
+    max-width: 70%;
 }
 
 .bar {
@@ -571,13 +579,20 @@
 .budget-card_content {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
 }
 
 .budget-amounts {
     display: flex;
     flex-direction: column;
     gap: 16px;
+}
+
+.budget-amounts div {
+    text-align: right;
+}
+
+.budget-amounts strong {
+    font-size: 22px;
 }
 
 .circle-progress {
@@ -659,6 +674,39 @@
     font-weight: 700;
 }
 
+@media (min-width: 1920px) {
+    
+    .budget-amounts {
+        min-width: 250px;
+        gap: 24px;
+    }
+
+    .budget-amounts div .label-mini {
+        order: -1;
+        /* font-size: 13px; */
+    }
+
+    
+    .budget-amounts strong {
+        /* font-size: 26px; */
+    }
+
+    .budget-amounts div{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .budget-card_info {
+        max-width: 545px;
+        margin: 0 auto;
+        width: 100%;
+        
+    }
+
+}
+
 /* TRASACTION CARD  */
 
 .transactions-card {
@@ -721,6 +769,7 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
+    position: relative;
 }
 
 .actions {
@@ -807,12 +856,12 @@
     border-bottom-right-radius: 6px;
 }
 
-.receipt-button {
+/* .receipt-button {
     background: var(--color-black);
     border-radius: var(--radius-md);
     padding: 20px 16px 20px 16px;
     margin-top: auto;
-}
+} */
 
 .receipt-button div {
     display: flex;
@@ -825,3 +874,17 @@
     letter-spacing: 2px;
 }
 
+@media (min-width: 1920px) {
+    .actions {
+        grid-template-columns: repeat(4, 1fr);
+        position: absolute;
+        top: 50%;
+        left: 28px;
+        right: 28px;
+        transform: translateY(-50%);
+    }
+
+    .quick-actions-card {
+        position: relative;
+    }
+}

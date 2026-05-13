@@ -1,8 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
     
 
-    const incomeDataValues = [20, 70, 15, 30, 12, 18, 40, 10, 5, 50,20, 70, 15, 30, 12, 18, 40, 10, 5, 50,];
-    const expenseDataValues = [20, 50, 15, 30, 35, 18, 70, 10, 5, 50,20, 70, 15, 30, 12, 18, 40, 10, 5, 50,];
+    const incomeDataValues = [
+    20, 70, 15, 30, 12, 18, 40, 10, 5, 50,
+    20, 70, 15, 30, 12, 18, 40, 10, 5, 50,
+    35, 22, 64, 18, 44, 28, 76, 12, 38, 55
+    ];
+
+    const expenseDataValues = [
+        20, 50, 15, 30, 35, 18, 70, 10, 5, 50,
+        20, 70, 15, 30, 12, 18, 40, 10, 5, 50,
+        24, 60, 18, 42, 31, 12, 68, 26, 40, 16
+    ];
     
     function createSparkline(canvasId, dataValues) {
         const canvas = document.getElementById(canvasId);
@@ -44,68 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         };
 
-    function createCircleProgress(canvasId, dataValues) {
-        const canvas = document.getElementById(canvasId);
-
-        const backgroundTrackPLugin = {
-            id: "backgroundTrack",
-            beforeDraw: function(chart) {
-                const ctx = chart.ctx;
-                const meta = chart.getDatasetMeta(0);
-                const bgGradient = ctx.createLinearGradient(0,0,0,180);
-                bgGradient.addColorStop(0, 'hsl(0, 0%, 97%)'); 
-                bgGradient.addColorStop(1, 'hsl(0, 0%, 85%)');
-                if(!meta.data.length) return;
-
-                const arc = meta.data[0];
-                const x = arc.x;
-                const y = arc.y;
-                const thickness = arc.outerRadius - arc.innerRadius;
-                const radius = arc.innerRadius + thickness / 2
-
-                ctx.save();
-                ctx.beginPath();
-                ctx.arc(x, y, radius, 0, 2*Math.PI);
-                ctx.lineWidth = thickness;
-
-                ctx.strokeStyle = bgGradient;
-                ctx.stroke();
-                ctx.restore();
-            }
-        }
-
-        return new Chart(canvas, {
-            type: 'doughnut',
-
-            data: {
-                datasets: [{
-                    data: [100-value, value], 
-                    backgroundColor: [
-                        "transparent",
-                        "rgb(0, 0, 0)"
-                    ],
-                    borderWidth: 0,
-                    borderRadius: 20,
-                }]
-            },
-            plugins: [
-                backgroundTrackPLugin,
-            ],
-            options: {
-                cutout: "78%",
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    title: {
-                        display: false
-                    }
-                }
-            },
-        })
-    }
 
 
     function createLineChart(canvasId, dataValues) {
@@ -186,18 +133,35 @@ document.addEventListener('DOMContentLoaded', function() {
             })
     };
 
+    const sparklineMedia = window.matchMedia("(min-width: 1920px)");
+
+    function getSparklineValues(values) {
+        const count = sparklineMedia.matches ? 30 : 20;
+        return values.slice(0, count);
+    }
+
+    function updateSparkline(chart, values) {
+        const visibleValues = getSparklineValues(values);
+
+        chart.data.labels = visibleValues.map((_, index) => index);
+        chart.data.datasets[0].data = visibleValues;
+        chart.update();
+    }
+
     const budgetDataValues = [65, 59, 80, 100, 70, 20, 12,]
     const sidebarDataValues = [65, 59, 80, 100, 70, 20, 0, 55, 42, 36];
-    createSparkline("incomeChart", incomeDataValues);
-    createSparkline("expenseChart", expenseDataValues);
+    const incomeChart = createSparkline("incomeChart", getSparklineValues(incomeDataValues));
+    const expenseChart = createSparkline("expenseChart", getSparklineValues(expenseDataValues));
     createLineChart("lineChart", sidebarDataValues)
-    // createBudgetSparkline("budgetChart", budgetDataValues);
 
+    sparklineMedia.addEventListener("change", () => {
+        updateSparkline(incomeChart, incomeDataValues);
+        updateSparkline(expenseChart, expenseDataValues);
+    });
 
     const valueItem = document.getElementById("circleProgressAmount");
     const rawValue = valueItem.textContent;
     const value = parseFloat(rawValue.replace("%", ""))
-    createCircleProgress("budgetProgress", value);
     
     
     const circle = document.querySelector(".circle-figure");
@@ -212,62 +176,56 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-//     const sphere = document.querySelector('.sphere-image');
 
-//     // 1. Задаем переменные
-//     // Целевые значения (куда стремимся)
-//     let targetX = 0; 
-//     let targetScale = 1;
-
-//     // Текущие значения (где сфера находится прямо сейчас)
-//     let currentX = 0;
-//     let currentScale = 1;
-
-// // 2. Функция, которая считает "цель" при ресайзе окна
-//     function updateTargetValues() {
-//     const windowWidth = window.innerWidth;
     
-//     // Задаем точки отсчета (например, от мобилки до Full HD)
-//     const minWidth = 768; 
-//     const maxWidth = 1920;
-    
-//     // Считаем прогресс от 0 до 1
-//     let progress = (windowWidth - minWidth) / (maxWidth - minWidth);
-//     progress = Math.max(0, Math.min(1, progress)); // Не даем выйти за рамки 0 и 1
+const balanceCard = document.querySelector(".balance-card");
+const sphereImage = document.querySelector(".sphere-image");
 
-//     // НАСТРОЙКИ "РЕЛЬСОВ":
-//     // Насколько сильно двигать влево (например, до -150px)
-//     targetX = progress * -150; 
-    
-//     // Насколько сильно увеличивать (например, от масштаба 1 до 1.5)
-//     targetScale = 1 + (progress * 0.5); 
-//     }
+if (balanceCard && sphereImage) {
+const baseWindowWidth = 1650;
+let currentX = 0;
+let currentScale = 1;
+let isFirstFrame = true;
+let frameCount = 0; // Добавляем счетчик кадров
+function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+}
+function animateSphere() {
+    try {
+        frameCount++;
+        
+        const extraWidth = Math.max(window.innerWidth - baseWindowWidth, 0);
+        const scaleProgress = clamp(extraWidth / 500, 0, 1.576);
+        
+        const targetX = extraWidth * 1.15; 
+        const targetScale = 1 + scaleProgress * 1;
 
-// // Пересчитываем цели при ресайзе
-//     window.addEventListener('resize', updateTargetValues);
+        if (isFirstFrame) {
+            currentX = targetX;
+            currentScale = targetScale;
+            isFirstFrame = false;
+        }
 
-//     // Вызываем один раз при старте, чтобы задать начальную позицию
-//     updateTargetValues();
+        const inertia = 0.02;
+        currentX += (targetX - currentX) * inertia;
+        currentScale += (targetScale - currentScale) * inertia;
 
-//     // 3. Цикл анимации (тот самый LERP для плавности)
-//     function animate() {
-//     // Коэффициент 0.08 отвечает за "тяжесть" сферы. 
-//     // Чем меньше (например, 0.03), тем больше инерция и плавность.
-//     const ease = 0.02; 
+        // Применяем стили
+        sphereImage.style.transform = `translate3d(${currentX.toFixed(2)}px, 0, 0) scale(${currentScale.toFixed(3)})`;
+        
+        console.log(`[Кадр ${frameCount}] Отработал успешно`);
+        
+        requestAnimationFrame(animateSphere);
+        
+    } catch (error) {
+        // ЕСЛИ ЦИКЛ УПАДЕТ, МЫ УВИДИМ ЭТО ЗДЕСЬ:
+        console.error("🚨 ЦИКЛ УБИТ ОШИБКОЙ:", error.message);
+        console.error(error.stack);
+    }
+}
 
-//     currentX += (targetX - currentX) * ease;
-//     currentScale += (targetScale - currentScale) * ease;
-
-//     // Применяем значения к картинке. 
-//     // translate3d включает аппаратное ускорение видеокарты
-//     sphere.style.transform = `translate(-50%, -50%) translate3d(${currentX}px, 0, 0) scale(${currentScale})`;
-
-//     // Зацикливаем
-//     requestAnimationFrame(animate);
-//     }
-
-//     // Запускаем анимацию
-//     animate();
+    animateSphere();
+}
 
 
 });
