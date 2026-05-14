@@ -133,7 +133,8 @@ document.addEventListener('DOMContentLoaded', function() {
             })
     };
 
-    const sparklineMedia = window.matchMedia("(min-width: 1920px)");
+    const sparklineMedia = window.matchMedia("(width > 1920px) or ((width > 468px) and (width < 641px))");
+
 
     function getSparklineValues(values) {
         const count = sparklineMedia.matches ? 30 : 20;
@@ -181,51 +182,42 @@ document.addEventListener('DOMContentLoaded', function() {
     const balanceCard = document.querySelector(".balance-card");
     const sphereImage = document.querySelector(".sphere-image");
 
-    if (balanceCard && sphereImage && window.matchMedia("(min-width: 1100px)").matches) {
+    if (balanceCard && sphereImage && window.matchMedia("(width > 1100px)").matches) {
     const baseWindowWidth = 1650;
     let currentX = 0;
     let currentScale = 1;
     let isFirstFrame = true;
-    let frameCount = 0; // Добавляем счетчик кадров
     function clamp(value, min, max) {
         return Math.min(Math.max(value, min), max);
     }
+    
+    const MAX_WIDTH = 2560;
+
     function animateSphere() {
-        try {
-            frameCount++;
-            
-            const extraWidth = Math.max(window.innerWidth - baseWindowWidth, 0);
-            const scaleProgress = clamp(extraWidth / 500, 0, 1.576);
-            
-            const targetX = extraWidth * 1.15; 
-            const targetScale = 1 + scaleProgress * 1;
+        const rawExtraWidth = Math.max(window.innerWidth - baseWindowWidth, 0);
+        const extraWidth = Math.min(rawExtraWidth, MAX_WIDTH - baseWindowWidth); // = max 910
 
-            if (isFirstFrame) {
-                currentX = targetX;
-                currentScale = targetScale;
-                isFirstFrame = false;
-            }
+        const scaleProgress = clamp(extraWidth / 500, 0, 1.576);
 
-            const inertia = 0.02;
-            currentX += (targetX - currentX) * inertia;
-            currentScale += (targetScale - currentScale) * inertia;
+        const targetX = extraWidth * 1.15;
+        const targetScale = 1 + scaleProgress * 1;
 
-            // Применяем стили
-            sphereImage.style.transform = `translate3d(${currentX.toFixed(2)}px, 0, 0) scale(${currentScale.toFixed(3)})`;
-            
-            console.log(`[Кадр ${frameCount}] Отработал успешно`);
-            
-            requestAnimationFrame(animateSphere);
-            
-        } catch (error) {
-            // ЕСЛИ ЦИКЛ УПАДЕТ, МЫ УВИДИМ ЭТО ЗДЕСЬ:
-            console.error("🚨 ЦИКЛ УБИТ ОШИБКОЙ:", error.message);
-            console.error(error.stack);
+        if (isFirstFrame) {
+            currentX = targetX;
+            currentScale = targetScale;
+            isFirstFrame = false;
         }
-    }
 
-        animateSphere();
+        const inertia = 0.02;
+        currentX += (targetX - currentX) * inertia;
+        currentScale += (targetScale - currentScale) * inertia;
+
+        sphereImage.style.transform = `translate3d(${currentX.toFixed(2)}px, 0, 0) scale(${currentScale.toFixed(3)})`;
+
+        requestAnimationFrame(animateSphere);
     }
+            animateSphere();
+        }
 
 
     /* ---------------- MOBILE MENU TOGGLE ---------------- */
