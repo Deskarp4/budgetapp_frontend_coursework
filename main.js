@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const balanceCard = document.querySelector(".balance-card");
     const sphereImage = document.querySelector(".sphere-image");
 
-    if (balanceCard && sphereImage) {
+    if (balanceCard && sphereImage && window.matchMedia("(min-width: 1100px)").matches) {
     const baseWindowWidth = 1650;
     let currentX = 0;
     let currentScale = 1;
@@ -227,5 +227,51 @@ document.addEventListener('DOMContentLoaded', function() {
         animateSphere();
     }
 
+
+    /* ---------------- MOBILE MENU TOGGLE ---------------- */
+    const menuToggle = document.querySelector(".menu-toggle");
+    const sidebar = document.querySelector(".sidebar");
+    const backdrop = document.querySelector(".sidebar-backdrop");
+
+    function setSidebar(open) {
+        if (!sidebar || !menuToggle) return;
+        sidebar.classList.toggle("is-open", open);
+        menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
+        document.body.classList.toggle("sidebar-open", open);
+        if (backdrop) {
+            backdrop.classList.toggle("is-visible", open);
+        }
+    }
+
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener("click", () => {
+            const isOpen = sidebar.classList.contains("is-open");
+            setSidebar(!isOpen);
+        });
+
+        if (backdrop) {
+            backdrop.addEventListener("click", () => setSidebar(false));
+        }
+
+        // Close on link click (within the drawer)
+        sidebar.querySelectorAll(".sidebar-item").forEach(item => {
+            item.addEventListener("click", () => {
+                if (window.matchMedia("(max-width: 900px)").matches) {
+                    setSidebar(false);
+                }
+            });
+        });
+
+        // Close on Esc
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") setSidebar(false);
+        });
+
+        // Reset state when crossing the breakpoint
+        const drawerMq = window.matchMedia("(min-width: 901px)");
+        drawerMq.addEventListener("change", (e) => {
+            if (e.matches) setSidebar(false);
+        });
+    }
 
 });

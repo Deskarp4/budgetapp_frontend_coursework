@@ -916,3 +916,608 @@
         font-size: 12px;
     }
 }
+
+
+/* =====================================================
+   RESPONSIVE LAYER — added for adaptive layout
+   Breakpoints:
+     - 1440px  : narrow desktop — shrink sidebar, tighten padding
+     - 1200px  : reflow cards into 2 columns
+     - 1100px  : laptop — shrink balance sphere
+     - 900px   : tablet — sidebar becomes off-canvas drawer
+     - 720px   : tablet portrait — stats stack, table scrolls
+     - 560px   : phone — single column
+     - 420px   : small phone
+   ===================================================== */
+
+/* ---------- Mobile menu toggle (hidden on desktop) ---------- */
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 60;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--color-black);
+    border: 1px solid var(--color-gray-600);
+    cursor: pointer;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+}
+.menu-toggle span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--color-white);
+    border-radius: 2px;
+    transition: transform .25s ease, opacity .2s ease;
+}
+.menu-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 40;
+    opacity: 0;
+    transition: opacity .25s ease;
+}
+.sidebar-backdrop.is-visible { opacity: 1; }
+
+/* 1440px */
+@media (max-width: 1440px) {
+    :root { --sidebar-width: 260px; }
+    .card { padding: 24px; }
+    .balance-card { padding: 32px; min-height: 280px; }
+    .balance-card_amount { font-size: 44px; }
+    .stats-row { gap: 48px; }
+    .stat::after { right: -24px; }
+    .sphere-image { width: 420px; }
+    .balance-card-visual { margin-left: 60px; }
+}
+
+/* 1200px — cards reflow */
+@media (max-width: 1200px) {
+    .income-card,
+    .expense-card,
+    .budget-card { grid-column: span 6; }
+    .transactions-card,
+    .quick-actions-card { grid-column: span 12; }
+    .actions { grid-template-columns: repeat(4, 1fr); }
+    .transactions-button { width: 100%; max-width: 320px; }
+}
+
+/* 1100px — shrink sphere visual */
+@media (max-width: 1100px) {
+    .balance-card { min-height: 240px; }
+    .balance-card_amount { font-size: 38px; }
+    .stats-row { gap: 32px; }
+    .stat { font-size: 18px; }
+    .stat::after { right: -16px; }
+    .progress-bar { width: 120px; }
+    .sphere-image { width: 320px; opacity: 0.55; right: -40px; }
+    .balance-card-visual {
+        position: absolute;
+        right: 0; bottom: 0; left: auto;
+        margin: 0;
+        pointer-events: none;
+    }
+}
+
+/* 900px — off-canvas sidebar */
+@media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .menu-toggle { display: flex; }
+
+    .sidebar {
+        position: fixed;
+        top: 0; left: 0;
+        width: 280px;
+        max-width: 85vw;
+        height: 100vh;
+        z-index: 50;
+        transform: translateX(-100%);
+        transition: transform .3s ease;
+        overflow-y: auto;
+        gap: 24px;
+    }
+    .sidebar.is-open {
+        transform: translateX(0);
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+    }
+    body.sidebar-open { overflow: hidden; }
+    body.sidebar-open .sidebar-backdrop { display: block; }
+
+    .logo { padding: 32px 0 16px 56px; font-size: 22px; }
+    .main { margin: 16px; }
+    .topbar { margin: 0 4px 20px 56px; }
+
+    .balance-card {
+        flex-direction: column;
+        gap: 16px;
+        min-height: auto;
+        padding: 28px;
+    }
+    .balance-card_amount { font-size: 36px; }
+    .currency-button { padding: 4px 10px; font-size: 11px; }
+    .sphere-image { width: 280px; opacity: 0.35; right: -60px; }
+
+    .income-card,
+    .expense-card,
+    .budget-card,
+    .transactions-card,
+    .quick-actions-card { grid-column: span 12; }
+    .income-card,
+    .expense-card { grid-column: span 6; }
+}
+
+/* 720px */
+@media (max-width: 720px) {
+    .income-card,
+    .expense-card { grid-column: span 12; }
+
+    .stats-row { gap: 24px; flex-wrap: wrap; }
+    .stat { flex: 1 1 calc(50% - 24px); min-width: 140px; }
+    .stat::after { display: none; }
+    .progress-bar { width: 100%; max-width: 180px; }
+
+    .budget-card_info {
+        flex-direction: column;
+        gap: 24px;
+        align-items: stretch;
+    }
+    .circle-progress,
+    .circle-progress_outer { width: 160px; height: 160px; }
+    .circle-progress_inner { width: 130px; height: 130px; }
+    .circle-progress svg { width: 160px; height: 160px; }
+    .circle-progress { margin: 0 auto; }
+    .budget-amounts div { text-align: center; }
+
+    .transactions-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+    .transactions-table thead,
+    .transactions-table tbody { display: table; width: 100%; min-width: 560px; }
+    .transactions-table th,
+    .transactions-table td { padding-right: 12px; }
+
+    .actions { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* 560px — phone */
+@media (max-width: 560px) {
+    .main { margin: 12px; }
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin: 0 4px 16px 56px;
+    }
+    .topbar h1 { font-size: 11px; }
+    .date-button { width: 100%; min-width: 0; }
+
+    .card { padding: 20px; border-radius: 16px; }
+    .balance-card { padding: 22px; }
+    .balance-card_amount { font-size: 30px; }
+    .amount { font-size: 26px; }
+    .balance-card_amount-row { flex-wrap: wrap; gap: 10px; }
+    .sphere-image { width: 220px; opacity: 0.22; right: -80px; }
+    .dashboard { gap: 14px; }
+    .stat { flex: 1 1 100%; }
+    .progress-bar { max-width: 100%; }
+
+    .action_icon { width: 60px; height: 60px; }
+    .action_icon img { width: 28px; height: 28px; }
+    .transactions-button { width: 100%; max-width: none; padding: 14px; }
+
+    .sidebar-card_balance { font-size: 18px; }
+    .circle-progress_stat strong { font-size: 30px; }
+}
+
+/* 420px — small phone */
+@media (max-width: 420px) {
+    .card { padding: 16px; }
+    .balance-card { padding: 18px; }
+    .balance-card_amount { font-size: 26px; }
+    .amount { font-size: 22px; }
+
+    .actions { gap: 16px; }
+    .action_icon { width: 54px; height: 54px; }
+    .action_icon img { width: 24px; height: 24px; }
+
+    .sphere-image { width: 180px; opacity: 0.18; right: -70px; }
+
+    .logo { font-size: 20px; padding-left: 56px; }
+    .logo svg { width: 36px; height: 36px; }
+}
+
+/* Touch / reduced-motion niceties */
+@media (hover: none) {
+    .sidebar-item:hover { background-color: transparent; border-color: transparent; }
+    .sidebar-item:hover::before,
+    .sidebar-item:hover::after,
+    .sidebar-item:hover .sidebar-row::before,
+    .sidebar-item:hover .sidebar-row::after { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sidebar,
+    .menu-toggle span,
+    .sidebar-backdrop { transition: none; }
+}
+
+
+/* ===== FIX: budget-amounts overflow at narrow widths ===== */
+.budget-card_info {
+    gap: 16px;
+    min-width: 0;
+}
+
+.budget-amounts {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.budget-amounts div {
+    min-width: 0;
+}
+
+.budget-amounts strong {
+    /* Scale down on narrow cards so "$10,080.00" never overflows */
+    font-size: clamp(15px, 1.5vw, 22px);
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.15;
+}
+
+/* Reflow budget-card to a wider slot earlier so the circle + amounts fit */
+@media (max-width: 1440px) {
+    .budget-card { grid-column: span 6; }
+    .income-card { grid-column: span 6; }
+    .expense-card { grid-column: span 6; }
+    .transactions-card { grid-column: span 12; }
+    .quick-actions-card { grid-column: span 12; }
+    .actions { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* On very wide screens keep the bigger amount type */
+@media (min-width: 1920px) {
+    .budget-amounts strong { font-size: 22px; }
+}
+
+
+/* ===== FIX v2: prioritize amount text — circle shrinks instead of text being cut off ===== */
+.budget-amounts strong {
+    /* Allow text to display fully; don't truncate */
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+    font-size: clamp(16px, 1.6vw, 22px);
+}
+
+.budget-amounts {
+    flex: 0 1 auto; /* shrink only as needed; don't force-grow */
+}
+
+/* Make the budget circle responsive — shrinks on narrow cards */
+.circle-progress,
+.circle-progress_outer {
+    width: clamp(120px, 13vw, 180px);
+    height: clamp(120px, 13vw, 180px);
+    flex-shrink: 1;
+}
+
+.circle-progress_outer {
+    padding: clamp(11px, 1.2vw, 17px);
+}
+
+.circle-progress_inner {
+    width: 100%;
+    height: 100%;
+}
+
+.circle-progress svg {
+    width: 100%;
+    height: 100%;
+}
+
+.circle-progress_stat strong {
+    font-size: clamp(24px, 2.4vw, 36px);
+}
+
+.circle-progress_stat span {
+    font-size: clamp(11px, 0.9vw, 14px);
+}
+
+/* Stroke scales with circle — keep visual proportion */
+.circle-figure,
+.circle-background {
+    stroke-width: 17;
+}
+
+
+/* =====================================================
+   ADAPTIVE TYPOGRAPHY — fluid type via clamp()
+   Scaling reference: ~600px viewport → min, ~1600px → max
+   Formula pattern: clamp(MIN, MIN + (MAX-MIN) * ((vw - 600) / 1000), MAX)
+   Simplified for readability with vw + base values.
+   ===================================================== */
+
+html {
+    /* Smooth font scaling base — affects rem-based sizes */
+    font-size: clamp(14px, 0.85rem + 0.25vw, 17px);
+}
+
+/* ----- Hero amounts ----- */
+.balance-card_amount {
+    font-size: clamp(28px, 2.2vw + 12px, 52px);
+    line-height: 1.05;
+}
+
+.amount {
+    font-size: clamp(22px, 1.2vw + 14px, 32px);
+}
+
+/* ----- Headings / section labels ----- */
+.label {
+    font-size: clamp(11px, 0.3vw + 10px, 14px);
+}
+
+.label-mini {
+    font-size: clamp(10px, 0.2vw + 9px, 12px);
+}
+
+.topbar h1 {
+    font-size: clamp(10px, 0.25vw + 9px, 13px);
+    letter-spacing: 0.04em;
+}
+
+/* ----- Sidebar ----- */
+.logo {
+    font-size: clamp(18px, 0.8vw + 14px, 26px);
+}
+
+.sidebar-item {
+    font-size: clamp(11px, 0.2vw + 10px, 13px);
+}
+
+.sidebar-card {
+    font-size: clamp(10px, 0.15vw + 9px, 11px);
+}
+
+.sidebar-card_balance {
+    font-size: clamp(16px, 0.7vw + 12px, 22px);
+}
+
+.username {
+    font-size: clamp(12px, 0.25vw + 11px, 14px);
+}
+
+/* ----- Stats / numbers ----- */
+.stat {
+    font-size: clamp(14px, 0.6vw + 10px, 20px);
+}
+
+.stat strong {
+    font-size: clamp(15px, 0.65vw + 11px, 22px);
+}
+
+.trend {
+    font-size: clamp(10px, 0.2vw + 9px, 12px);
+}
+
+/* ----- Tables ----- */
+.transactions-table th,
+.transactions-table td {
+    font-size: clamp(11px, 0.2vw + 10px, 13px);
+}
+
+/* ----- Top rows in income/expense ----- */
+.top-row_part {
+    font-size: clamp(11px, 0.25vw + 10px, 13px);
+}
+
+/* ----- Buttons ----- */
+.date-button {
+    font-size: clamp(11px, 0.2vw + 10px, 13px);
+}
+
+.currency-button {
+    font-size: clamp(10px, 0.2vw + 9px, 12px);
+}
+
+.transactions-button div {
+    font-size: clamp(9px, 0.15vw + 8px, 11px);
+}
+
+.action_button {
+    font-size: clamp(8px, 0.15vw + 7px, 10px);
+}
+
+/* ----- Time / reset ----- */
+.reset-time time {
+    font-size: clamp(12px, 0.25vw + 11px, 14px);
+}
+
+/* ----- Budget card numbers (override earlier rule with fluid version) ----- */
+.budget-amounts strong {
+    font-size: clamp(15px, 0.7vw + 11px, 22px);
+}
+
+/* ----- Circle progress ----- */
+.circle-progress_stat strong {
+    font-size: clamp(22px, 1.3vw + 14px, 36px);
+}
+
+.circle-progress_stat span {
+    font-size: clamp(10px, 0.25vw + 9px, 14px);
+}
+
+
+/* ===== FIX: income/expense top-rows — even alignment & consistent bar widths ===== */
+.top-row {
+    gap: 12px;
+}
+
+.top-row_part {
+    /* Grow from 0 basis so all rows share the same column width */
+    flex: 1 1 0;
+    min-width: 0;
+    gap: 12px;            /* guarantees space between label & amount */
+}
+
+.top-row_part span:first-child {
+    /* Truncate over-long labels rather than push the amount */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.top-row_part span:last-child {
+    flex-shrink: 0;        /* keep the amount fully visible */
+    white-space: nowrap;
+}
+
+/* Outer progress track in income/expense — fixed, never squeezed */
+.cashflow-card_progress {
+    flex-shrink: 0;
+    width: clamp(70px, 8vw, 120px);
+}
+
+/* Expense card had no inline widths on its values — give it logical proportions */
+.expense-card .stats .top-row:nth-child(1) .progress-bar_value { width: 70%; }
+.expense-card .stats .top-row:nth-child(2) .progress-bar_value { width: 40%; }
+.expense-card .stats .top-row:nth-child(3) .progress-bar_value { width: 25%; }
+
+
+/* ===== FIX: pair budget-card with quick-actions to avoid empty space ===== */
+@media (max-width: 1440px) {
+    /* Pair budget + quick-actions on a single row; transactions full-width below */
+    .budget-card      { grid-column: span 6; order: 1; }
+    .quick-actions-card { grid-column: span 6; order: 1; }
+    .transactions-card  { grid-column: span 12; order: 2; }
+
+    /* Quick-actions: 4 icons in a row to match budget card height */
+    .quick-actions-card .actions {
+        grid-template-columns: repeat(4, 1fr);
+        height: 100%;
+        align-content: center;
+    }
+}
+
+/* On the 900px drawer breakpoint, let budget take full width below the income/expense pair */
+@media (max-width: 900px) {
+    .budget-card        { grid-column: span 12; order: 0; }
+    .quick-actions-card { grid-column: span 12; order: 0; }
+    .transactions-card  { grid-column: span 12; order: 0; }
+    .income-card, .expense-card { order: 0; }
+}
+
+
+/* ===== FIX: Quick actions ALWAYS stays 2x2, never reflows to a row ===== */
+.quick-actions-card .actions {
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-rows: repeat(2, auto);
+    position: static !important;
+    transform: none !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    height: auto !important;
+    align-content: center;
+    place-items: center;
+}
+
+
+/* ===== FIX: do NOT truncate income/expense labels — let progress bar shrink instead ===== */
+.top-row_part span:first-child {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: nowrap;
+}
+
+/* Progress bar may shrink on very narrow cards, but labels stay readable */
+.cashflow-card_progress {
+    flex-shrink: 1;
+    min-width: 40px;
+    width: clamp(50px, 7vw, 120px);
+}
+
+
+/* ===== FIX: progress-bar inner value must not overflow its track ===== */
+.progress-bar {
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.progress-bar_value {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Convert fixed-px defaults to % so the fill scales with the track */
+.cashflow-card_progress .progress-bar_value {
+    /* Inline styles like style="width: 75%" still win for income card */
+}
+
+/* Income card: ensure inline % widths apply; remove any 70px fallback impact */
+.income-card .progress-bar_value,
+.expense-card .progress-bar_value {
+    width: var(--bar-fill, 50%);
+}
+
+/* Re-declare expense-card values as CSS vars (overrides the previous fixed widths) */
+.expense-card .stats .top-row:nth-child(1) { --bar-fill: 70%; }
+.expense-card .stats .top-row:nth-child(2) { --bar-fill: 40%; }
+.expense-card .stats .top-row:nth-child(3) { --bar-fill: 25%; }
+
+
+/* ===== FIX: keep budget + quick-actions side-by-side on tablet ===== */
+@media (max-width: 900px) and (min-width: 641px) {
+    .budget-card        { grid-column: span 6 !important; order: 0 !important; }
+    .quick-actions-card { grid-column: span 6 !important; order: 0 !important; }
+    .transactions-card  { grid-column: span 12 !important; }
+
+    /* Make quick-actions match budget-card height */
+    .quick-actions-card {
+        display: flex;
+        flex-direction: column;
+    }
+    .quick-actions-card .actions {
+        flex: 1;
+        align-content: center;
+    }
+}
+
+/* Only stack everything full-width on truly small screens (≤640px) */
+@media (max-width: 640px) {
+    .budget-card,
+    .quick-actions-card,
+    .transactions-card,
+    .income-card,
+    .expense-card { grid-column: span 12 !important; }
+}
+
+
+/* ===== FIX: explicit order so quick-actions sits next to budget, not below transactions ===== */
+@media (max-width: 900px) and (min-width: 641px) {
+    .balance-card       { order: 0 !important; }
+    .income-card        { order: 1 !important; }
+    .expense-card       { order: 2 !important; }
+    .budget-card        { order: 3 !important; }
+    .quick-actions-card { order: 4 !important; }
+    .transactions-card  { order: 5 !important; }
+}
