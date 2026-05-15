@@ -266,4 +266,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    document.getElementById("addIncomeButton").addEventListener("click", function() {
+        document.getElementById("addIncomeModal").style.display = "flex";
+        })
+    document.getElementById("closeIncomeButton").addEventListener("click", function() {
+            document.getElementById("addIncomeModal").style.display = "none";
+    })
+
+
+    document.getElementById("addExpenseButton").addEventListener("click", function() {
+        document.getElementById("addExpenseModal").style.display = "flex";
+        })
+    document.getElementById("closeExpenseButton").addEventListener("click", function() {
+            document.getElementById("addExpenseModal").style.display = "none";
+    })
 });

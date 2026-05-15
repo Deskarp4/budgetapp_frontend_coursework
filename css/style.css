@@ -788,11 +788,23 @@
     position: relative;
 }
 
+.quick-actions-card .label {
+    position: absolute;
+    top: 28px;
+    left: 28px;
+}
+
+@media (max-width: 1440px) { .quick-actions-card .label { top: 24px; left: 24px; } }
+@media (max-width: 560px)  { .quick-actions-card .label { top: 20px; left: 20px; } }
+@media (max-width: 420px)  { .quick-actions-card .label { top: 16px; left: 16px; } }
+
 .actions {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, max-content);
+    flex-grow: 1;
     place-items: center;
     gap: 24px;
+    height: 100%;
 }
 
 .action_button {
@@ -802,14 +814,20 @@
     flex-direction: column;
     align-items: center;
     gap: 24px;
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 500;
     text-transform: uppercase;
+    position: relative;
+}
+
+.action_button span {
+    position: absolute;
+    bottom: -28px;
 }
 
 .action_icon {
-    width: 68px;
-    height: 68px;
+    width: 90px;
+    height: 90px;
     border: 1px solid transparent;
 
     display: flex;
@@ -817,6 +835,11 @@
     align-items: center;
     position: relative;
     border-radius: 6px;
+}
+
+.action_icon img {
+    width: 48px;
+    height: 48px;
 }
 
 .action_icon:hover {
@@ -905,24 +928,8 @@
     }
 
     .action_icon {
-        width: 80px;
-        height: 80px;
-    }
-
-    .action_icon img {
-        width: 42px;
-        height: 42px;
-    }
-
-    .action_button {
-        font-size: 11px;
-    }
-}
-
-@media (min-width: 2560px) {
-    .action_icon {
-        width: 100px;
-        height: 100px;
+        width: 90px;
+        height: 90px;
     }
 
     .action_icon img {
@@ -932,6 +939,22 @@
 
     .action_button {
         font-size: 12px;
+    }
+}
+
+@media (min-width: 2560px) {
+    .action_icon {
+        width: 112px;
+        height: 112px;
+    }
+
+    .action_icon img {
+        width: 54px;
+        height: 54px;
+    }
+
+    .action_button {
+        font-size: 14px;
     }
 }
 
@@ -1075,6 +1098,7 @@
 
 /* 720px */
 @media (max-width: 720px) {
+
     .income-card,
     .expense-card { grid-column: span 12; }
 
@@ -1108,7 +1132,10 @@
     .transactions-table th,
     .transactions-table td { padding-right: 12px; }
 
-    .actions { grid-template-columns: repeat(2, 1fr); }
+    .quick-actions-card .actions {
+        grid-template-columns: 1fr !important;
+        gap: 64px !important;
+    }
 }
 
 /* 560px — phone */
@@ -1133,8 +1160,8 @@
     .stat { flex: 1 1 100%; }
     .progress-bar { max-width: 100%; }
 
-    .action_icon { width: 60px; height: 60px; }
-    .action_icon img { width: 28px; height: 28px; }
+    .action_icon { width: 68px; height: 68px; }
+    .action_icon img { width: 32px; height: 32px; }
     .transactions-button { width: 100%; max-width: none; padding: 14px; }
 
     .sidebar-card_balance { font-size: 18px; }
@@ -1149,8 +1176,8 @@
     .amount { font-size: 22px; }
 
     .actions { gap: 16px; }
-    .action_icon { width: 54px; height: 54px; }
-    .action_icon img { width: 24px; height: 24px; }
+    .action_icon { width: 60px; height: 60px; }
+    .action_icon img { width: 28px; height: 28px; }
 
     /* .sphere-image { width: 180px; opacity: 0.18; right: -70px; } */
 
@@ -1369,7 +1396,7 @@ html {
 }
 
 .action_button {
-    font-size: clamp(8px, 0.15vw + 7px, 10px);
+    font-size: clamp(10px, 0.15vw + 8px, 12px);
 }
 
 /* ----- Time / reset ----- */
@@ -1422,6 +1449,119 @@ html {
     width: clamp(100px, 8vw, 120px);
 }
 
+
+/* ===== MODAL WINDOWS ===== */
+.modal-overlay {
+    display: none; /* Поменяйте на none, когда захотите скрыть окно через JS */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px); /* Красивое размытие заднего фона */
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+}
+
+.modal-card {
+    width: 90%;
+    max-width: clamp(420px, 35vw, 640px);
+    max-height: 90vh;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    animation: modalFadeIn 0.3s ease-out forwards;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-modal-button {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--color-gray-500);
+    line-height: 1;
+}
+
+.close-modal-btn:hover {
+    color: var(--color-black);
+}
+
+.modal-body, .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal-body {
+    flex-grow: 1;
+}
+
+.form-group {
+    gap: 8px;
+}
+
+.form-control, .form-description {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--color-gray-300);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    background-color: var(--color-white);
+}
+
+.form-control:focus {
+    border-color: var(--color-black);
+}
+
+select.form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    background-size: 16px;
+    padding-right: 40px;
+    cursor: pointer;
+}
+
+.primary-button {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background-color 0.2s;
+    margin-top: auto;
+}
+
+.primary-button:hover {
+    background-color: #333;
+}
+
 /* Expense card had no inline widths on its values — give it logical proportions */
 .expense-card .stats .top-row:nth-child(1) .progress-bar_value { width: 70%; }
 .expense-card .stats .top-row:nth-child(2) .progress-bar_value { width: 40%; }
@@ -1454,8 +1594,7 @@ html {
 
 /* ===== FIX: Quick actions ALWAYS stays 2x2, never reflows to a row ===== */
 .quick-actions-card .actions {
-    grid-template-columns: repeat(2, 1fr) !important;
-    grid-template-rows: repeat(2, auto);
+    grid-template-columns: repeat(2, 1fr);
     position: static !important;
     transform: none !important;
     top: auto !important;

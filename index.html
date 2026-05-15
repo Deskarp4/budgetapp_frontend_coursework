@@ -380,11 +380,11 @@
                         <h2 class="label">Quick actions</h2>
                         <div class="actions">
                             <div class="action">
-                                <button class="action_button">
+                                <button class="action_button" id="addIncomeButton">
                                     <div class="action_icon">
                                         <img src="assets/plus.svg"
-                                        width="36x"
-                                        height="36x">
+                                        width="40"
+                                        height="40">
                                         <div class="action_icon_border"></div>
                                     </div>
 
@@ -393,11 +393,11 @@
                             </div>
 
                             <div class="action">
-                                <button class="action_button">
+                                <button class="action_button" id="addExpenseButton">
                                     <div class="action_icon">
                                         <img src="assets/minus.svg"
-                                        width="36x"
-                                        height="36x">
+                                        width="40"
+                                        height="40">
                                         <div class="action_icon_border"></div>
                                     </div>
 
@@ -405,7 +405,7 @@
                                 </button>
                             </div>
 
-                            <div class="action">
+                            <!-- <div class="action">
                                 <button class="action_button">
                                     <div class="action_icon">
                                         <img src="assets/transaction_action.svg"
@@ -430,7 +430,7 @@
                                     <span>New goal</span>
                                 </button>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!-- <button class="receipt-button">
                             <div>
@@ -446,6 +446,69 @@
             </main>
 
         </div>
+
+        <div class="modal-overlay" id="addIncomeModal">
+            <div class="modal-card card">
+                <div class="modal-header">
+                    <h2 class="label">Add income</h2>
+                    <button class="close-modal-button" id="closeIncomeButton" aria-label="Close modal">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="incomeInput" class="label-mini">Amount</label>
+                        <input type="number" id="incomeInput" class="form-control" placeholder="$ 0.00">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="incomeDescription" class="label-mini">Description</label>
+                        <input type="text" class="form-description" id="incomeDescription" placeholder="Add description">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="incomeCategory" class="label-mini">Category</label>
+                        <select id="incomeCategory" class="form-control">
+                            <option value="salary">Salary (Зарплата)</option>
+                            <option value="scholarship">Scholarship (Стипендия)</option>
+                        </select>
+                    </div>
+                    
+                    <button class="primary-button">Add to balance</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="addExpenseModal">
+            <div class="modal-card card">
+                <div class="modal-header">
+                    <h2 class="label">Add expense</h2>
+                    <button class="close-modal-button" id="closeExpenseButton" aria-label="Close modal">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="expenseInput" class="label-mini">Amount</label>
+                        <input type="number" id="expenseInput" class="form-control" placeholder="$ 0.00">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expenseDescription" class="label-mini">Description</label>
+                        <input type="text" class="form-description" id="expenseDescription" placeholder="Add description">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expenseCategory" class="label-mini">Category</label>
+                        <select id="expenseCategory" class="form-control">  
+                            <option value="salary">Salary (Зарплата)</option>
+                            <option value="scholarship">Scholarship (Стипендия)</option>
+                        </select>
+                    </div>
+                    
+                    <button class="primary-button">Add to balance</button>
+                </div>
+            </div>
+        </div>
+
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="main.js"></script>
     </body>
