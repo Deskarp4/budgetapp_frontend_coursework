@@ -182,7 +182,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const balanceCard = document.querySelector(".balance-card");
     const sphereImage = document.querySelector(".sphere-image");
 
-    if (balanceCard && sphereImage && window.matchMedia("(width > 1100px)").matches) {
     const baseWindowWidth = 1650;
     let currentX = 0;
     let currentScale = 1;
@@ -217,7 +216,6 @@ document.addEventListener('DOMContentLoaded', function() {
         requestAnimationFrame(animateSphere);
     }
             animateSphere();
-        }
 
 
     /* ---------------- MOBILE MENU TOGGLE ---------------- */
