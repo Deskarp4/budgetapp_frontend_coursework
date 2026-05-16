@@ -116,20 +116,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return Math.min(Math.max(value, min), max);
     }
 
-
-    const originalUpdate = Chart.prototype.update;
-Chart.prototype.update = function(...args) {
-    console.trace('UPDATE called:', args);
-    return originalUpdate.apply(this, args);
-};
-
-const originalResize = Chart.prototype.resize;
-Chart.prototype.resize = function(...args) {
-    console.trace('RESIZE called');
-    return originalResize.apply(this, args);
-};
-
-
     const sparklineMedia = window.matchMedia("(width > 1920px) or ((width > 468px) and (width < 641px))");
 
     const incomeChart = createSparkline("incomeChart", getSparklineValues(incomeDataValues));

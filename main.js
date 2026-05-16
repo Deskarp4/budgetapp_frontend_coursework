@@ -40,7 +40,13 @@ document.addEventListener('DOMContentLoaded', function() {
     return chart;
 }
 
-    createLineChart("lineChart", sidebarDataValues);
+    if (document.getElementById("lineChart")) {
+        createLineChart("lineChart", sidebarDataValues);
+    }
+    if (document.getElementById("transactionsPageLineChart")) {
+       createLineChart("transactionsPageLineChart", sidebarDataValues);
+    }
+    
 
 
     /* ---------------- MOBILE MENU TOGGLE ---------------- */
