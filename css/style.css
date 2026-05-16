@@ -1018,14 +1018,14 @@
 .transactions-list {
     background-color: var(--color-white);
     position: relative;
-    overflow: hidden;
+    overflow-x: auto;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 95%;
     height: 90vh;
     overflow-y: auto;
-    scrollbar-width: none; /* Скрываем скроллбар в Firefox */
+    scrollbar-width: none; 
 }
 
 /* Скрываем скроллбар в Chrome, Safari и Edge */
@@ -1188,6 +1188,10 @@
     .income-card,
     .expense-card { grid-column: span 6; }
 
+    .transactions-list {
+        height: 85vh;
+    }
+
 }
 
 /* 720px */
@@ -1222,9 +1226,26 @@
         -webkit-overflow-scrolling: touch;
     }
     .transactions-table thead,
-    .transactions-table tbody { display: table; width: 100%; min-width: 560px; }
+    .transactions-table tbody { display: table; width: 100%; min-width: 580px; }
     .transactions-table th,
     .transactions-table td { padding-right: 12px; }
+    .transactions-table tr td:last-child {
+        padding-right: 26px;
+    }
+    
+    .transactions-table tr td:last-child button {
+        right: 18px;
+    }
+
+    .transactions-list {
+        height: 85vh;
+    }
+
+    .transactions-list-table {
+        display: table !important;
+        width: 100%;
+        min-width: 640px; 
+    }
 
     .quick-actions-card .actions {
         grid-template-columns: 1fr !important;
@@ -1260,6 +1281,10 @@
 
     .sidebar-card_balance { font-size: 18px; }
     .circle-progress_stat strong { font-size: 30px; }
+
+    .transactions-table tr td:last-child button {
+        right: 20px;
+    }
 }
 
 /* 420px — small phone */
@@ -1469,6 +1494,12 @@ html {
 .transactions-table th,
 .transactions-table td {
     font-size: clamp(11px, 0.2vw + 10px, 13px);
+}
+
+/* Увеличиваем размер шрифта на странице транзакций для больших экранов (~ +20%) */
+.transactions-list-table th,
+.transactions-list-table td {
+    font-size: clamp(12px, 0.4vw + 10px, 16px);
 }
 
 /* ----- Top rows in income/expense ----- */
