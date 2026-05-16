@@ -37,14 +37,14 @@
 
 .sidebar::before,
 .sidebar::after {
-    border-color: var(--color-gray-500);
+    border-color: var(--color-gray-400);
 }
 
 .sidebar-card::after,
 .sidebar-card::before,
 .sidebar-card_borders::after,
 .sidebar-card_borders::before  {
-    border-color: var(--color-gray-500);
+    border-color: var(--color-gray-400);
 }
 
 .sidebar::before {
@@ -162,8 +162,8 @@
 
 .sidebar-item::before,
 .sidebar-item::after,
-.sidebar-item a::before,
-.sidebar-item a::after {
+.sidebar-item .sidebar-row::before,
+.sidebar-item .sidebar-row::after {
     content: "";
     position: absolute;
     width: 16px;
@@ -636,7 +636,6 @@
     stroke-dasharray: 512.15;
     stroke-dashoffset: 512.15;
     stroke-linecap: round;
-    animation: progress 1s ease forwards;
 }
 
 .circle-background {
@@ -748,7 +747,7 @@
     font-size: 12px;
 }
 
-.transactions-table th {
+.dashboard-table th {
     text-transform: uppercase;
     padding: 8px 8px 8px 0;
     color: var(--color-gray-600);
@@ -1012,6 +1011,74 @@
     transition: opacity .25s ease;
 }
 .sidebar-backdrop.is-visible { opacity: 1; }
+
+/* TRANSACTIONS PAGE */
+
+.transactions-list {
+    background-color: var(--color-white);
+    position: relative;
+    overflow: hidden;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 95%;
+    height: 90vh;
+    overflow-y: auto;
+    scrollbar-width: none; /* Скрываем скроллбар в Firefox */
+}
+
+/* Скрываем скроллбар в Chrome, Safari и Edge */
+.transactions-list::-webkit-scrollbar {
+    display: none;
+}
+
+.transactions-list-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.transactions-list-table th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.transactions-list-table td{
+    border-bottom: 1px solid var(--color-gray-200);
+}
+
+.transactions-list-table td {
+    padding: 24px 8px 24px 0;
+}
+
+.transactions-list-table .table_header-stroke {
+    border-bottom: none;
+}
+
+.transactions-list-table tr:last-child td {
+    border-bottom: none;
+}
+
+.transactions-list .table_header-stroke th {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    box-shadow: 0 -30px 0 0 var(--color-black);
+    padding: 8px 8px 30px 0;
+}
+
+.transactions-list .table_header-stroke th:first-child {
+    box-shadow: 
+        0 -30px 0 0 var(--color-black),
+        -30px 0 0 0 var(--color-black),
+        -30px -30px 0 0 var(--color-black); 
+}
+
+.transactions-list .table_header-stroke th:last-child {
+    box-shadow: 
+        0 -30px 0 0 var(--color-black),
+        30px 0 0 0 var(--color-black),
+        30px -30px 0 0 var(--color-black); 
+}
 
 /* 1440px */
 @media (max-width: 1440px) {

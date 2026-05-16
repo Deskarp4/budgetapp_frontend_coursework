@@ -31,21 +31,21 @@
                 </div>
 
                 <nav class="sidebar-nav">
-                    <div class="sidebar-item">
+                    <a href="index.html" class="sidebar-item">
                         <img src="assets/trend_up.svg"
                         width="22px"
                         height="22px">
-                        <a class="sidebar-row">Dashboard</a>
+                        <span class="sidebar-row">Dashboard</span>
                         <span class="sidebar-item_dot"></span>
-                    </div>
+                    </a>
 
-                    <div class="sidebar-item">
+                    <a href="transactions.html" class="sidebar-item">
                         <img src="assets/transactions.svg"
                         width="22px"
                         height="22px">
-                        <a class="sidebar-row">Transactions</a>
+                        <span class="sidebar-row">Transactions</span>
                         <span class="sidebar-item_dot"></span>
-                    </div>
+                    </a>
                     
                 </nav>
                 <!-- <div class="sidebar-borders"></div> -->
@@ -303,7 +303,7 @@
 
                     <section class="card transactions-card">
                         <h2 class="label">Recent transactions</h2>
-                        <table class="transactions-table">
+                        <table class="transactions-table dashboard-table">
                             <thead>
                                 <tr class="table_header-stroke">
                                     <th>Date</th>
@@ -367,14 +367,14 @@
                             </tbody>
                         </table>
 
-                        <button class="transactions-button">
+                        <a href="transactions.html" class="transactions-button">
                             <div>
                                 <p>View all transactions</p>
                                 <img src="assets/arrow_right.svg"
                                 width="20px"
                                 height="20px">
                             </div>
-                        </button>
+                        </a>
                     </section>
                     <section class="card quick-actions-card">
                         <h2 class="label">Quick actions</h2>
@@ -469,7 +469,14 @@
                         <label for="incomeCategory" class="label-mini">Category</label>
                         <select id="incomeCategory" class="form-control">
                             <option value="salary">Salary (Зарплата)</option>
+                            <option value="freelance">Freelance (Фриланс)</option>
+                            <option value="investments">Investments (Инвестиции)</option>
+                            <option value="business">Business (Бизнес)</option>
+                            <option value="rental">Rental Income (Аренда)</option>
+                            <option value="gifts">Gifts (Подарки)</option>
                             <option value="scholarship">Scholarship (Стипендия)</option>
+                            <option value="refunds">Refunds (Возвраты / Кэшбэк)</option>
+                            <option value="other">Other (Другое)</option>
                         </select>
                     </div>
                     
@@ -499,8 +506,16 @@
                     <div class="form-group">
                         <label for="expenseCategory" class="label-mini">Category</label>
                         <select id="expenseCategory" class="form-control">  
-                            <option value="salary">Salary (Зарплата)</option>
-                            <option value="scholarship">Scholarship (Стипендия)</option>
+                            <option value="housing">Housing (Жилье)</option>
+                            <option value="food">Food (Еда / Продукты)</option>
+                            <option value="transport">Transport (Транспорт)</option>
+                            <option value="utilities">Utilities (ЖКХ)</option>
+                            <option value="health">Health (Здоровье)</option>
+                            <option value="entertainment">Entertainment (Развлечения)</option>
+                            <option value="shopping">Shopping (Покупки)</option>
+                            <option value="software">Software (ПО / Подписки)</option>
+                            <option value="education">Education (Образование)</option>
+                            <option value="other">Other (Другое)</option>
                         </select>
                     </div>
                     
@@ -511,5 +526,6 @@
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="main.js"></script>
+        <script src="dashboard.js"></script>
     </body>
 </html>

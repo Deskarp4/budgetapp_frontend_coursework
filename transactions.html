@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Monyx — Dashboard</title>
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+
+    <body>
+
+        <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+        <div class="app">
+
+            <aside class="sidebar">
+                <div class="logo">
+                    <svg width="46" height="46" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 53.5C0 63 10.5 64 10.5 64C10.5 64 21.633 64.2238 21.5 53.5C21.367 42.7762 23.1559 39.999 30.5 31C37.8441 22.001 52.8052 21.7459 53 21.5C53 21.5 64 21 64 10.5C64 0 53 0 53 0C53 0 42.5 0 42.5 10.5C42.5 21 32 21.5 32 21.5C32 21.5 21.5 21 21.5 10.5C21.5 0 10.5 0 10.5 0C10.5 0 0 0.499993 0 10.5C0 20.5 10.5 21.5 10.5 21.5C10.5 21.5 21.5 22 21.5 32C21.5 42 10.5 43 10.5 43C10.5 43 0 44 0 53.5Z" fill="white"/>
+                        <path d="M64 46.5C64.0369 36.7971 55.8828 29.2629 46 29.5C36.1173 29.7371 29.4432 38.6708 29.5 46.5C29.5569 54.3292 35.9996 63.9293 46 64C56.0005 64.0707 63.9631 56.2029 64 46.5Z" fill="white"/>
+                    </svg>
+                    <span class="logo_icon">Monyx</span>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a href="index.html" class="sidebar-item">
+                        <img src="assets/trend_up.svg"
+                        width="22px"
+                        height="22px">
+                        <span class="sidebar-row">Dashboard</span>
+                        <span class="sidebar-item_dot"></span>
+                    </a>
+
+                    <a class="sidebar-item">
+                        <img src="assets/transactions.svg"
+                        width="22px"
+                        height="22px">
+                        <span class="sidebar-row">Transactions</span>
+                        <span class="sidebar-item_dot"></span>
+                    </a>
+                    
+                </nav>
+
+                <div class="sidebar-cards">
+                    <div class="sidebar-card">
+                        <div class="sidebar-card_borders"></div>
+                        <span>Total balance</span>
+                        <strong class="sidebar-card_balance">$24,530.80</strong>
+                        <span>USD</span>
+                        <div class="sidebar-chart">
+                            <canvas id="lineChart"></canvas>
+                        </div>
+
+                    </div>
+
+                    <div class="sidebar-card">
+                        <div class="sidebar-card_borders"></div>
+                        <span>User</span>
+                        <strong class="username">Monyx_42</strong>
+                        <span>Premium plan</span>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="main">
+                <section class="card transactions-list">
+                    <table class="transactions-table transactions-list-table">
+                            <thead>
+                                <tr class="table_header-stroke">
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Строка 1 -->
+                                <tr>
+                                <td>May 24, 2024</td>
+                                <td>Salary Payment</td>
+                                <td>Income</td>
+                                <td>
+                                    <img src="assets/transactions_plus.svg"
+                                    width="12px"
+                                    height="12px">
+                                </td>
+                                <td>$6,000.00</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 2 -->
+                                <tr>
+                                <td>May 23, 2024</td>
+                                <td>Dribbble Pro</td>
+                                <td>Software</td>
+                                <td>
+                                    <img src="assets/transactions_minus.svg"
+                                    width="12px"
+                                    height="12px">
+                                </td>
+                                <td>$12.00</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 3 -->
+                                <tr>
+                                <td>May 22, 2024</td>
+                                <td>Uber Ride</td>
+                                <td>Transport</td>
+                                <td>
+                                    <img src="assets/transactions_minus.svg"
+                                    width="12px"
+                                    height="12px">
+                                </td>
+                                <td>$18.50</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 4 -->
+                                <tr>
+                                <td>May 22, 2024</td>
+                                <td>Grocery Shopping</td>
+                                <td>Food</td>
+                                <td>
+                                    <img src="assets/transactions_minus.svg"
+                                    width="12px"
+                                    height="12px">
+                                </td>
+                                <td>$64.25</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 5 -->
+                                <tr>
+                                <td>May 21, 2024</td>
+                                <td>Freelance Project</td>
+                                <td>Income</td>
+                                <td>
+                                    <img src="assets/transactions_plus.svg"
+                                    width="12px"
+                                    height="12px">
+                                </td>
+                                <td>$1,250.00</td>
+                                <td>● Completed</td>
+                                </tr>
+
+
+
+                                <!-- Строка 1 -->
+                                <tr>
+                                <td>May 24, 2024</td>
+                                <td>Salary Payment</td>
+                                <td>Income</td>
+                                <td>
+                                    <img src="assets/transactions_plus.svg"
+                                    width="12px"
+                                    height="12px">
+                                </td>
+                                <td>$6,000.00</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 2 -->
+                                <tr>
+                                <td>May 23, 2024</td>
+                                <td>Dribbble Pro</td>
+                                <td>Software</td>
+                                <td>
+                                    <img src="assets/transactions_minus.svg"
+                                    width="12px"
+                                    height="12px">
+                                </td>
+                                <td>$12.00</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 3 -->
+                                <tr>
+                                <td>May 22, 2024</td>
+                                <td>Uber Ride</td>
+                                <td>Transport</td>
+                                <td>
+                                    <img src="assets/transactions_minus.svg"
+                                    width="12px"
+                                    height="12px">
+                                </td>
+                                <td>$18.50</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 4 -->
+                                <tr>
+                                <td>May 22, 2024</td>
+                                <td>Grocery Shopping</td>
+                                <td>Food</td>
+                                <td>
+                                    <img src="assets/transactions_minus.svg"
+                                    width="12px"
+                                    height="12px">
+                                </td>
+                                <td>$64.25</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 5 -->
+                                <tr>
+                                <td>May 21, 2024</td>
+                                <td>Freelance Project</td>
+                                <td>Income</td>
+                                <td>
+                                    <img src="assets/transactions_plus.svg"
+                                    width="12px"
+                                    height="12px">
+                                </td>
+                                <td>$1,250.00</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 1 -->
+                                <tr>
+                                <td>May 24, 2024</td>
+                                <td>Salary Payment</td>
+                                <td>Income</td>
+                                <td>
+                                    <img src="assets/transactions_plus.svg"
+                                    width="12px"
+                                    height="12px">
+                                </td>
+                                <td>$6,000.00</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 2 -->
+                                <tr>
+                                <td>May 23, 2024</td>
+                                <td>Dribbble Pro</td>
+                                <td>Software</td>
+                                <td>
+                                    <img src="assets/transactions_minus.svg"
+                                    width="12px"
+                                    height="12px">
+                                </td>
+                                <td>$12.00</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 3 -->
+                                <tr>
+                                <td>May 22, 2024</td>
+                                <td>Uber Ride</td>
+                                <td>Transport</td>
+                                <td>
+                                    <img src="assets/transactions_minus.svg"
+                                    width="12px"
+                                    height="12px">
+                                </td>
+                                <td>$18.50</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 4 -->
+                                <tr>
+                                <td>May 22, 2024</td>
+                                <td>Grocery Shopping</td>
+                                <td>Food</td>
+                                <td>
+                                    <img src="assets/transactions_minus.svg"
+                                    width="12px"
+                                    height="12px">
+                                </td>
+                                <td>$64.25</td>
+                                <td>● Completed</td>
+                                </tr>
+
+                                <!-- Строка 5 -->
+                                <tr>
+                                <td>May 21, 2024</td>
+                                <td>Freelance Project</td>
+                                <td>Income</td>
+                                <td>
+                                    <img src="assets/transactions_plus.svg"
+                                    width="12px"
+                                    height="12px">
+                                </td>
+                                <td>$1,250.00</td>
+                                <td>● Completed</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                </section>
+            </main>
+        </div>
+
+        <script src="main.js"></script>
+    </body>
+</html>
