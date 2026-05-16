@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-
-    const sidebarDataValues = [65, 59, 80, 100, 70, 20, 0, 55, 42, 36];
+    const txs = typeof getTransactions === 'function' ? getTransactions() : [];
+    let sidebarDataValues = typeof getBalanceHistory === 'function' ? getBalanceHistory(txs) : [0,0,0,0];
 
    function createLineChart(canvasId, dataValues) {
     const canvas = document.getElementById(canvasId);
@@ -40,13 +40,22 @@ document.addEventListener('DOMContentLoaded', function() {
     return chart;
 }
 
+    window.sidebarLineChart1 = null;
+    window.sidebarLineChart2 = null;
+
     if (document.getElementById("lineChart")) {
-        createLineChart("lineChart", sidebarDataValues);
+        window.sidebarLineChart1 = createLineChart("lineChart", sidebarDataValues);
     }
     if (document.getElementById("transactionsPageLineChart")) {
-       createLineChart("transactionsPageLineChart", sidebarDataValues);
+        window.sidebarLineChart2 = createLineChart("transactionsPageLineChart", sidebarDataValues);
     }
     
+    window.updateSidebarCharts = function() {
+        const newTxs = typeof getTransactions === 'function' ? getTransactions() : [];
+        const newData = typeof getBalanceHistory === 'function' ? getBalanceHistory(newTxs) : [];
+        if (window.sidebarLineChart1) { window.sidebarLineChart1.data.datasets[0].data = newData; window.sidebarLineChart1.update(); }
+        if (window.sidebarLineChart2) { window.sidebarLineChart2.data.datasets[0].data = newData; window.sidebarLineChart2.update(); }
+    };
 
 
     /* ---------------- MOBILE MENU TOGGLE ---------------- */

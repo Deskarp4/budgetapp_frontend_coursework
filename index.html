@@ -380,7 +380,7 @@
                         <h2 class="label">Quick actions</h2>
                         <div class="actions">
                             <div class="action">
-                                <button class="action_button" id="addIncomeButton">
+                                <button class="action-left action_button" id="addIncomeButton">
                                     <div class="action_icon">
                                         <img src="assets/plus.svg"
                                         width="40"
@@ -393,7 +393,7 @@
                             </div>
 
                             <div class="action">
-                                <button class="action_button" id="addExpenseButton">
+                                <button class="action-right action_button" id="addExpenseButton">
                                     <div class="action_icon">
                                         <img src="assets/minus.svg"
                                         width="40"
@@ -405,32 +405,32 @@
                                 </button>
                             </div>
 
-                            <!-- <div class="action">
-                                <button class="action_button">
+                            <div class="action">
+                                <button class="action-left action_button" id="setBudgetButton">
                                     <div class="action_icon">
                                         <img src="assets/transaction_action.svg"
-                                        width="32x"
-                                        height="32x">
+                                        width="32"
+                                        height="32">
                                         <div class="action_icon_border"></div>
                                     </div>
 
-                                    <span>Transfer</span>
+                                    <span>Set budget</span>
                                 </button>
                             </div>
 
                             <div class="action">
-                                <button class="action_button">
+                                <button class="action-right action_button" id="setGoalButton">
                                     <div class="action_icon">
                                         <img src="assets/goal.svg"
-                                        width="32x"
-                                        height="32x">
+                                        width="32"
+                                        height="32">
                                         <div class="action_icon_border"></div>
                                     </div>
 
                                     <span>New goal</span>
                                 </button>
                             </div>
-                        </div> -->
+                        </div>
 
                         <!-- <button class="receipt-button">
                             <div>
@@ -480,7 +480,7 @@
                         </select>
                     </div>
                     
-                    <button class="primary-button">Add to balance</button>
+                    <button class="primary-button" id="submitIncomeBtn">Add to balance</button>
                 </div>
             </div>
         </div>
@@ -519,12 +519,13 @@
                         </select>
                     </div>
                     
-                    <button class="primary-button">Add to balance</button>
+                    <button class="primary-button" id="submitExpenseBtn">Add to balance</button>
                 </div>
             </div>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="logic.js"></script>
         <script src="main.js"></script>
         <script src="dashboard.js"></script>
     </body>

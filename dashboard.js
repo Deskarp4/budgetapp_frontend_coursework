@@ -1,15 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const incomeDataValues = [
-        20, 70, 15, 30, 12, 18, 40, 10, 5, 50,
-        20, 70, 15, 30, 12, 18, 40, 10, 5, 50,
-        35, 22, 64, 18, 44, 28, 76, 12, 38, 55
-    ];
-
-    const expenseDataValues = [
-        20, 50, 15, 30, 35, 18, 70, 10, 5, 50,
-        20, 70, 15, 30, 12, 18, 40, 10, 5, 50,
-        24, 60, 18, 42, 31, 12, 68, 26, 40, 16
-    ];
+    // Получаем реальные данные для графиков
+    const txs = typeof getTransactions === 'function' ? getTransactions() : [];
+    const incomeDataValues = typeof getChartData === 'function' ? getChartData(txs, 'income') : [];
+    const expenseDataValues = typeof getChartData === 'function' ? getChartData(txs, 'expense') : [];
     
     const budgetDataValues = [65, 59, 80, 100, 70, 20, 12,];
 
@@ -151,6 +144,22 @@ document.addEventListener('DOMContentLoaded', function() {
     if (sphereImage) {
         animateSphere();
     }
+
+    // Эта функция будет вызываться каждый раз при добавлении/удалении транзакции из logic.js
+    window.updateDashboardCharts = function() {
+        const newTxs = typeof getTransactions === 'function' ? getTransactions() : [];
+        const inc = typeof getChartData === 'function' ? getChartData(newTxs, 'income') : [];
+        const exp = typeof getChartData === 'function' ? getChartData(newTxs, 'expense') : [];
+        updateSparkline(incomeChart, inc);
+        updateSparkline(expenseChart, exp);
+
+        // Обновляем круговой прогресс
+        const circleAmount = document.getElementById("circleProgressAmount");
+        if (circleAmount) {
+            const val = parseFloat(circleAmount.textContent.replace("%", "")) || 0;
+            circle.style.strokeDashoffset = circleLength - (circleLength * val / 100);
+        }
+    };
 
     /* --- MODALS --- */
     const addIncomeBtn = document.getElementById("addIncomeButton");
