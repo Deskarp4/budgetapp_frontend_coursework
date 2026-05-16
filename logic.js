@@ -26,11 +26,18 @@ window.saveTransactions = function(transactions) {
 };
 
 // Добавление новой операции
-window.addTransaction = function(type, amount, description, category) {
+window.addTransaction = function(type, amount, description, category, dateStr) {
     const txs = getTransactions();
+    let date = new Date().toISOString();
+    if (dateStr) {
+        const [year, month, day] = dateStr.split('-');
+        const d = new Date();
+        d.setFullYear(year, month - 1, day);
+        date = d.toISOString();
+    }
     txs.push({
         id: Date.now().toString(),
-        date: new Date().toISOString(),
+        date: date,
         description,
         category,
         type,
@@ -60,7 +67,7 @@ function formatDate(dateString) {
 // Управление настройками: Бюджет и Цель (Goal)
 window.getSettings = function() {
     const saved = localStorage.getItem('monyx_settings');
-    return saved ? JSON.parse(saved) : { goal: 50000, budget: 10080 };
+    return saved ? JSON.parse(saved) : { goal: 0, budget: 0 };
 };
 
 window.saveSettings = function(settings) {
@@ -76,10 +83,7 @@ window.getChartData = function(transactions, type) {
         .sort((a, b) => new Date(a.date) - new Date(b.date));
         
     let data = sorted.map(t => t.amount);
-    if (data.length === 0) return [0, 0, 0, 0, 0];
-    data = data.slice(-30); // Берем последние 30 значений
-    while(data.length < 10) data.unshift(0); // Заполняем нулями для визуала, если транзакций мало
-    return data;
+    return data.slice(-30); // Просто возвращаем до 30 последних значений без добивки
 };
 
 // Подготовка данных для графика баланса по ДНЯМ (Сайдбар)
@@ -123,24 +127,70 @@ function updateUI() {
     // 3. Обновление карточки Total Balance (Прогресс бары)
     const stats = document.querySelectorAll('.stats-row .stat strong');
     if (stats.length === 3) {
-        stats[0].textContent = formatCurrency(income);
+        stats[0].textContent = formatCurrency(settings.goal);
         stats[1].textContent = formatCurrency(expense);
         stats[2].textContent = `${Math.max(0, savingsRate)}%`;
     }
     const balProgress = document.querySelectorAll('.balance-card_progress .progress-bar_value');
     if (balProgress.length === 3) {
         // Income бар: Показываем достижение цели (Goal)
-        balProgress[0].style.width = `${Math.min(100, Math.round((income / settings.goal) * 100))}%`;
+        balProgress[0].style.width = `${settings.goal > 0 ? Math.min(100, Math.round((income / settings.goal) * 100)) : 0}%`;
         // Expense бар: Дублирует круговой график бюджета (Budget)
-        balProgress[1].style.width = `${Math.min(100, Math.round((expense / settings.budget) * 100))}%`;
+        balProgress[1].style.width = `${settings.budget > 0 ? Math.min(100, Math.round((expense / settings.budget) * 100)) : 0}%`;
         // Savings rate бар
         balProgress[2].style.width = `${Math.max(0, savingsRate)}%`;
     }
 
+    // Расчет трендов (показателей from last month)
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const prevYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
+    let incCurr = 0, incPrev = 0, expCurr = 0, expPrev = 0;
+
+    txs.forEach(t => {
+        const d = new Date(t.date);
+        const m = d.getMonth();
+        const y = d.getFullYear();
+        if (y === currentYear && m === currentMonth) {
+            if (t.type === 'income') incCurr += t.amount;
+            else expCurr += t.amount;
+        } else if (y === prevYear && m === prevMonth) {
+            if (t.type === 'income') incPrev += t.amount;
+            else expPrev += t.amount;
+        }
+    });
+
+    const balCurr = incCurr - expCurr;
+    const balPrev = incPrev - expPrev;
+
+    function calcTrend(curr, prev) {
+        if (prev === 0) return curr > 0 ? 100 : (curr < 0 ? -100 : 0);
+        return ((curr - prev) / Math.abs(prev)) * 100;
+    }
+
+    function updateTrendUI(prefix, trendValue) {
+        const iconEl = document.getElementById(`${prefix}TrendIcon`);
+        const textEl = document.getElementById(`${prefix}TrendText`);
+        if (!iconEl || !textEl) return;
+        const absValue = Math.abs(trendValue);
+        const isPositive = trendValue >= 0 || absValue < 0.05; // Избегаем отрицательного нуля (-0.0%)
+        const sign = isPositive ? '+' : '-';
+        const valueStr = absValue.toFixed(1).replace('.0', '');
+        textEl.textContent = `${sign}${valueStr}% from last month`;
+        iconEl.src = isPositive ? 'assets/arrow_up.svg' : 'assets/arrow_down.svg';
+    }
+
+    updateTrendUI('balance', calcTrend(balCurr, balPrev));
+    updateTrendUI('income', calcTrend(incCurr, incPrev));
+    updateTrendUI('expense', calcTrend(expCurr, expPrev));
+
     // 4. Обновление карточки бюджета
     const BUDGET_TOTAL = settings.budget; 
     const remaining = Math.max(0, BUDGET_TOTAL - expense);
-    const usedPercent = Math.min(100, Math.round((expense / BUDGET_TOTAL) * 100));
+    const usedPercent = BUDGET_TOTAL > 0 ? Math.min(100, Math.round((expense / BUDGET_TOTAL) * 100)) : 0;
     
     const budgetAmounts = document.querySelector('.budget-amounts');
     if (budgetAmounts) {
@@ -189,15 +239,60 @@ function renderTopList(type, containerSelector) {
     container.innerHTML = html;
 }
 
+const emptyTableMessage = document.getElementById("empty-table-message");
+const emptyIncomesMessage = document.getElementById("empty-income-message");
+const emptyExpensesMessage = document.getElementById("empty-expense-message");
+const emptyTransactionsPageTableMessage = document.getElementById("empty-transactions-page-table-message");
+
+let currentSortColumn = 'date';
+let currentSortDirection = 'desc';
+
 // Генерация Таблиц
 function renderTables(txs) {
-    const sortedTxs = [...txs].sort((a, b) => new Date(b.date) - new Date(a.date));
+    const sortedTxs = [...txs].sort((a, b) => {
+        if (!currentSortColumn) {
+            // Сортировка по умолчанию (по убыванию даты)
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        }
+
+        let valA = a[currentSortColumn];
+        let valB = b[currentSortColumn];
+
+        if (currentSortColumn === 'date') {
+            valA = new Date(valA).getTime();
+            valB = new Date(valB).getTime();
+        } else if (currentSortColumn === 'amount') {
+            valA = parseFloat(valA);
+            valB = parseFloat(valB);
+        } else {
+            valA = valA ? valA.toString().toLowerCase() : '';
+            valB = valB ? valB.toString().toLowerCase() : '';
+        }
+
+        if (valA < valB) return currentSortDirection === 'asc' ? -1 : 1;
+        if (valA > valB) return currentSortDirection === 'asc' ? 1 : -1;
+        return 0;
+    });
     
     const dashTbody = document.querySelector('.dashboard-table tbody');
     if (dashTbody) dashTbody.innerHTML = sortedTxs.slice(0, 5).map(t => generateRowHTML(t, false)).join(''); // На дашборде 5 штук
     
     const fullTbody = document.querySelector('.transactions-list-table tbody');
     if (fullTbody) fullTbody.innerHTML = sortedTxs.map(t => generateRowHTML(t, true)).join(''); // На странице транзакций - все
+
+    // Обновляем визуальное отображение стрелочек
+    document.querySelectorAll('th[data-sort]').forEach(th => {
+        th.classList.remove('sort-asc', 'sort-desc');
+        if (th.dataset.sort === currentSortColumn && currentSortDirection) {
+            th.classList.add(`sort-${currentSortDirection}`);
+        }
+    });
+
+    if (emptyTableMessage) emptyTableMessage.style.display = sortedTxs.length === 0 ? "block" : "none"; 
+    if (emptyTransactionsPageTableMessage) emptyTransactionsPageTableMessage.style.display = sortedTxs.length === 0 ? "block" : "none"; 
+    if (emptyIncomesMessage) emptyIncomesMessage.style.display = txs.some(t => t.type === 'income') ? "none" : "block"; 
+    if (emptyExpensesMessage) emptyExpensesMessage.style.display = txs.some(t => t.type === 'expense') ? "none" : "block"; 
+    
 }
 
 function generateRowHTML(t, showDelete) {
@@ -216,22 +311,51 @@ function generateRowHTML(t, showDelete) {
         </tr>`;
 }
 
+// Обновление таймера "Reset in" до конца текущего месяца
+function updateResetTimer() {
+    const timeEl = document.getElementById('resetTimerText');
+    if (!timeEl) return;
+
+    const now = new Date();
+    // Создаем дату 1-го числа следующего месяца (00:00:00)
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    const diffMs = endOfMonth - now;
+
+    if (diffMs <= 0) {
+        timeEl.textContent = "00D : 00H : 00M";
+        return;
+    }
+
+    const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
+    const mins = Math.floor((diffMs / 1000 / 60) % 60);
+
+    timeEl.textContent = `${String(days).padStart(2, '0')}D : ${String(hours).padStart(2, '0')}H : ${String(mins).padStart(2, '0')}M`;
+}
+
 // Инициализация событий при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
     updateUI(); // Первый рендер всего интерфейса
+    updateResetTimer(); // Первый рендер таймера
+    setInterval(updateResetTimer, 1000); // Запуск обновления таймера каждую секунду
 
     // Обработка кнопки добавления дохода
     const submitIncomeBtn = document.getElementById('submitIncomeBtn');
     if (submitIncomeBtn) {
         submitIncomeBtn.addEventListener('click', () => {
             const amount = parseFloat(document.getElementById('incomeInput').value);
-            const desc = document.getElementById('incomeDescription').value.trim();
+            let desc = document.getElementById('incomeDescription').value.trim();
             const cat = document.getElementById('incomeCategory').value;
-            if (!amount || amount <= 0 || !desc) return alert('Please enter a valid amount and description.');
+            const dateVal = document.getElementById('incomeDate').value;
+            if (!amount || amount <= 0) return alert('Please enter a valid amount.');
             
-            addTransaction('income', amount, desc, cat);
+            desc = desc ? desc.substring(0, 50) : 'None';
+
+            addTransaction('income', amount, desc, cat, dateVal);
             document.getElementById('addIncomeModal').style.display = 'none';
-            document.getElementById('incomeInput').value = ''; document.getElementById('incomeDescription').value = '';
+            document.getElementById('incomeInput').value = ''; 
+            document.getElementById('incomeDescription').value = '';
+            document.getElementById('incomeDate').value = '';
         });
     }
     
@@ -240,38 +364,49 @@ document.addEventListener('DOMContentLoaded', () => {
     if (submitExpenseBtn) {
         submitExpenseBtn.addEventListener('click', () => {
             const amount = parseFloat(document.getElementById('expenseInput').value);
-            const desc = document.getElementById('expenseDescription').value.trim();
+            let desc = document.getElementById('expenseDescription').value.trim();
             const cat = document.getElementById('expenseCategory').value;
-            if (!amount || amount <= 0 || !desc) return alert('Please enter a valid amount and description.');
+            const dateVal = document.getElementById('expenseDate').value;
+            if (!amount || amount <= 0) return alert('Please enter a valid amount.');
             
-            addTransaction('expense', amount, desc, cat);
+            desc = desc ? desc.substring(0, 50) : 'None';
+
+            addTransaction('expense', amount, desc, cat, dateVal);
             document.getElementById('addExpenseModal').style.display = 'none';
-            document.getElementById('expenseInput').value = ''; document.getElementById('expenseDescription').value = '';
+            document.getElementById('expenseInput').value = ''; 
+            document.getElementById('expenseDescription').value = '';
+            document.getElementById('expenseDate').value = '';
         });
     }
     
-    // Обработка кнопки "Set Budget"
-    const setBudgetBtn = document.getElementById('setBudgetButton');
-    if (setBudgetBtn) {
-        setBudgetBtn.addEventListener('click', () => {
+    // Обработка сохранения бюджета
+    const submitBudgetBtn = document.getElementById('submitBudgetBtn');
+    if (submitBudgetBtn) {
+        submitBudgetBtn.addEventListener('click', () => {
             const settings = getSettings();
-            const newBudget = prompt('Enter new monthly budget:', settings.budget);
-            if (newBudget !== null && !isNaN(newBudget) && newBudget > 0) {
-                settings.budget = parseFloat(newBudget);
+            const newBudget = parseFloat(document.getElementById('budgetInput').value);
+            if (!isNaN(newBudget) && newBudget > 0) {
+                settings.budget = newBudget;
                 saveSettings(settings);
+                document.getElementById('setBudgetModal').style.display = 'none';
+            } else {
+                alert('Please enter a valid budget amount.');
             }
         });
     }
 
-    // Обработка кнопки "New Goal"
-    const setGoalBtn = document.getElementById('setGoalButton');
-    if (setGoalBtn) {
-        setGoalBtn.addEventListener('click', () => {
+    // Обработка сохранения цели
+    const submitGoalBtn = document.getElementById('submitGoalBtn');
+    if (submitGoalBtn) {
+        submitGoalBtn.addEventListener('click', () => {
             const settings = getSettings();
-            const newGoal = prompt('Enter new income goal:', settings.goal);
-            if (newGoal !== null && !isNaN(newGoal) && newGoal > 0) {
-                settings.goal = parseFloat(newGoal);
+            const newGoal = parseFloat(document.getElementById('goalInput').value);
+            if (!isNaN(newGoal) && newGoal > 0) {
+                settings.goal = newGoal;
                 saveSettings(settings);
+                document.getElementById('setGoalModal').style.display = 'none';
+            } else {
+                alert('Please enter a valid goal amount.');
             }
         });
     }
@@ -280,5 +415,28 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.addEventListener('click', (e) => {
         const deleteBtn = e.target.closest('.delete-row-button');
         if (deleteBtn) deleteTransaction(deleteBtn.dataset.id);
+    });
+
+    // Обработка клика по заголовкам таблиц для сортировки
+    document.querySelectorAll('th[data-sort]').forEach(th => {
+        th.addEventListener('click', () => {
+            const sortKey = th.dataset.sort;
+            const initialDir = (sortKey === 'date' || sortKey === 'amount') ? 'desc' : 'asc';
+            
+            if (currentSortColumn === sortKey) {
+                if (currentSortDirection === initialDir) {
+                    // Второй клик: меняем направление
+                    currentSortDirection = initialDir === 'asc' ? 'desc' : 'asc';
+                } else {
+                    // Третий клик: сбрасываем сортировку
+                    currentSortColumn = null;
+                    currentSortDirection = null;
+                }
+            } else {
+                currentSortColumn = sortKey;
+                currentSortDirection = initialDir;
+            }
+            updateUI(); // Перерисовываем весь UI с новой сортировкой
+        });
     });
 });

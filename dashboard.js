@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function createSparkline(canvasId, dataValues) {
     const canvas = document.getElementById(canvasId);
-    canvas.width = canvas.parentElement.offsetWidth;
-    canvas.height = 40;
 
     const chart = new Chart(canvas, {
         type: 'bar',
@@ -74,7 +72,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function getSparklineValues(values) {
         const count = sparklineMedia.matches ? 30 : 20;
-        return values.slice(0, count);
+        let result = values.slice(-count); // Берем последние (самые свежие) значения
+        
+        // Добиваем нулями справа, если данных меньше, чем нужно колонок
+        while (result.length < count) {
+            result.push(0);
+        }
+        return result;
     }
 
     function updateSparkline(chart, values) {
@@ -109,29 +113,46 @@ document.addEventListener('DOMContentLoaded', function() {
         return Math.min(Math.max(value, min), max);
     }
 
-    const sparklineMedia = window.matchMedia("(width > 1920px) or ((width > 468px) and (width < 641px))");
+    // Используем безопасный синтаксис media queries для поддержки всех браузеров
+    const sparklineMedia = window.matchMedia("(min-width: 1921px), (min-width: 469px) and (max-width: 640px)");
 
-    const incomeChart = createSparkline("incomeChart", getSparklineValues(incomeDataValues));
-    const expenseChart = createSparkline("expenseChart", getSparklineValues(expenseDataValues));
+    const incomeChartEl = document.getElementById("incomeChart");
+    const expenseChartEl = document.getElementById("expenseChart");
+    let incomeChart = null;
+    let expenseChart = null;
+
+    if (incomeChartEl) {
+        incomeChart = createSparkline("incomeChart", getSparklineValues(incomeDataValues));
+    }
+    if (expenseChartEl) {
+        expenseChart = createSparkline("expenseChart", getSparklineValues(expenseDataValues));
+    }
 
     sparklineMedia.addEventListener("change", () => {
-        updateSparkline(incomeChart, incomeDataValues);
-        updateSparkline(expenseChart, expenseDataValues);
+        // Запрашиваем свежие данные из хранилища при перестроении графиков,
+        // вместо того чтобы использовать устаревшие массивы с момента загрузки страницы
+        if (typeof window.updateDashboardCharts === 'function') {
+            window.updateDashboardCharts();
+        }
     });
 
     const valueItem = document.getElementById("circleProgressAmount");
-    const rawValue = valueItem.textContent;
-    const value = parseFloat(rawValue.replace("%", ""));
-    
     const circle = document.querySelector(".circle-figure");
-    const circleLength = circle.getTotalLength();
-    circle.style.setProperty("stroke-dasharray", circleLength);
-    circle.style.setProperty("stroke-dashoffset", circleLength);
+    let circleLength = 0;
 
-    requestAnimationFrame(() => {
-        circle.style.transition = "stroke-dashoffset 1s ease";
-        circle.style.strokeDashoffset = circleLength - (circleLength * value / 100);
-    });
+    if (valueItem && circle) {
+        const rawValue = valueItem.textContent;
+        const value = parseFloat(rawValue.replace("%", ""));
+        
+        circleLength = circle.getTotalLength();
+        circle.style.setProperty("stroke-dasharray", circleLength);
+        circle.style.setProperty("stroke-dashoffset", circleLength);
+
+        requestAnimationFrame(() => {
+            circle.style.transition = "stroke-dashoffset 1s ease";
+            circle.style.strokeDashoffset = circleLength - (circleLength * value / 100);
+        });
+    }
 
     const sphereImage = document.querySelector(".sphere-image");
     const baseWindowWidth = 1650;
@@ -150,12 +171,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const newTxs = typeof getTransactions === 'function' ? getTransactions() : [];
         const inc = typeof getChartData === 'function' ? getChartData(newTxs, 'income') : [];
         const exp = typeof getChartData === 'function' ? getChartData(newTxs, 'expense') : [];
-        updateSparkline(incomeChart, inc);
-        updateSparkline(expenseChart, exp);
+        if (incomeChart) updateSparkline(incomeChart, inc);
+        if (expenseChart) updateSparkline(expenseChart, exp);
 
         // Обновляем круговой прогресс
         const circleAmount = document.getElementById("circleProgressAmount");
-        if (circleAmount) {
+        if (circleAmount && circle) {
             const val = parseFloat(circleAmount.textContent.replace("%", "")) || 0;
             circle.style.strokeDashoffset = circleLength - (circleLength * val / 100);
         }
@@ -166,7 +187,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeIncomeBtn = document.getElementById("closeIncomeButton");
     const addIncomeModal = document.getElementById("addIncomeModal");
     if (addIncomeBtn && closeIncomeBtn && addIncomeModal) {
-        addIncomeBtn.addEventListener("click", () => addIncomeModal.style.display = "flex");
+        addIncomeBtn.addEventListener("click", () => {
+            const dateInput = document.getElementById('incomeDate');
+            if (dateInput && !dateInput.value) {
+                const today = new Date();
+                dateInput.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+            }
+            addIncomeModal.style.display = "flex";
+        });
         closeIncomeBtn.addEventListener("click", () => addIncomeModal.style.display = "none");
     }
 
@@ -174,7 +202,48 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeExpenseBtn = document.getElementById("closeExpenseButton");
     const addExpenseModal = document.getElementById("addExpenseModal");
     if (addExpenseBtn && closeExpenseBtn && addExpenseModal) {
-        addExpenseBtn.addEventListener("click", () => addExpenseModal.style.display = "flex");
+        addExpenseBtn.addEventListener("click", () => {
+            const dateInput = document.getElementById('expenseDate');
+            if (dateInput && !dateInput.value) {
+                const today = new Date();
+                dateInput.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+            }
+            addExpenseModal.style.display = "flex";
+        });
         closeExpenseBtn.addEventListener("click", () => addExpenseModal.style.display = "none");
     }
+
+    const setBudgetBtn = document.getElementById("setBudgetButton");
+    const closeBudgetBtn = document.getElementById("closeBudgetButton");
+    const setBudgetModal = document.getElementById("setBudgetModal");
+    if (setBudgetBtn && closeBudgetBtn && setBudgetModal) {
+        setBudgetBtn.addEventListener("click", () => {
+            const settings = typeof getSettings === 'function' ? getSettings() : { budget: 0 };
+            const budgetInput = document.getElementById('budgetInput');
+            if (budgetInput) budgetInput.value = settings.budget;
+            setBudgetModal.style.display = "flex";
+        });
+        closeBudgetBtn.addEventListener("click", () => setBudgetModal.style.display = "none");
+    }
+
+    const setGoalBtn = document.getElementById("setGoalButton");
+    const closeGoalBtn = document.getElementById("closeGoalButton");
+    const setGoalModal = document.getElementById("setGoalModal");
+    if (setGoalBtn && closeGoalBtn && setGoalModal) {
+        setGoalBtn.addEventListener("click", () => {
+            const settings = typeof getSettings === 'function' ? getSettings() : { goal: 0 };
+            const goalInput = document.getElementById('goalInput');
+            if (goalInput) goalInput.value = settings.goal;
+            setGoalModal.style.display = "flex";
+        });
+        closeGoalBtn.addEventListener("click", () => setGoalModal.style.display = "none");
+    }
+
+    // Закрытие модальных окон при клике вне их области (на прозрачный/размытый фон)
+    const modals = document.querySelectorAll('.modal-overlay');
+    modals.forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.style.display = 'none';
+        });
+    });
 });

@@ -53,7 +53,7 @@
                     <div class="sidebar-card">
                         <div class="sidebar-card_borders"></div>
                         <span>Total balance</span>
-                        <strong class="sidebar-card_balance">$24,530.80</strong>
+                        <strong class="sidebar-card_balance">$0.00</strong>
                         <span>USD</span>
                         <div class="sidebar-chart">
                             <canvas id="lineChart"></canvas>
@@ -71,8 +71,8 @@
                     <div class="sidebar-card">
                         <div class="sidebar-card_borders"></div>
                         <span>User</span>
-                        <strong class="username">Monyx_42</strong>
-                        <span>Premium plan</span>
+                        <strong class="username">Guest</strong>
+                        <span>Free plan</span>
                     </div>
                 </div>
             </aside>
@@ -82,7 +82,7 @@
                     <h1>Dashboard</h1>
                     <button class="date-button">
                         <div class="date-button_content">
-                            <data>May 24, 2024</data>
+                            <data>Today</data>
                             <div>
                                 <img src="assets/calendar.svg"
                                 width="17px"
@@ -104,35 +104,36 @@
                         <div class="balance-card_info">
                             <h2 class="label">Total balance</h2>
                             <div class="balance-card_amount-row">
-                            <p class="amount balance-card_amount">$24,530.80</p>
+                            <p class="amount balance-card_amount">$0.00</p>
                             <button class="currency-button">USD</button>
                             </div>
 
                             <div class="trend-row">
                             <img src="assets/arrow_up.svg"
                             width="12px"
-                            height="12px">
-                            <p class="trend">+12.5% from last month</p>
+                            height="12px"
+                            id="balanceTrendIcon">
+                            <p class="trend" id="balanceTrendText">0.0% from last month</p>
                             </div>
 
                             <div class="stats-row">
                                 <div class="stat">
-                                    <span class="label-mini">Income</span>
-                                    <strong>$32,450.00</strong>
+                                    <span class="label-mini">Goal</span>
+                                    <strong>$0.00</strong>
                                     <div class="progress-bar balance-card_progress">
                                         <div class="progress-bar_value"></div>
                                     </div>
                                 </div>
                                 <div class="stat">
                                     <span class="label-mini">Expenses</span>
-                                    <strong>$7,919.20</strong>
+                                    <strong>$0.00</strong>
                                     <div class="progress-bar balance-card_progress">
                                         <div class="progress-bar_value"></div>
                                     </div>
                                 </div>
                                 <div class="stat">
                                     <span class="label-mini">Savings rate</span>
-                                    <strong>68%</strong>
+                                    <strong>0%</strong>
                                     <div class="progress-bar balance-card_progress">
                                         <div class="progress-bar_value"></div>
                                     </div>
@@ -155,13 +156,14 @@
 
                     <section class="card income-card">
                         <h2 class="label">Income</h2>
-                        <p class="amount">$32,450.00</p>
+                        <p class="amount">$0.00</p>
                         
                         <div class="trend-row">
                             <img src="assets/arrow_up.svg"
                             width="12px"
-                            height="12px">
-                            <p class="trend">+12.5% from last month</p>
+                            height="12px"
+                            id="incomeTrendIcon">
+                            <p class="trend" id="incomeTrendText">0.0% from last month</p>
                         </div>
 
                         <div class="sparkbar-chart">
@@ -169,84 +171,28 @@
                         </div>
 
                         <p class="label-mini stats_label">Top sources</p>
-                        <div class="stats">
-                            <div class="top-row">
-                                <div class="top-row_part">
-                                    <span>Salary</span>
-                                    <span>$24,000.00</span>
-                                </div>
-                                <div class="progress-bar cashflow-card_progress">
-                                    <div class="progress-bar_value" style="width: 75%;"></div>
-                                </div>
-                            </div>
-
-                            <div class="top-row">
-                                <div class="top-row_part">
-                                    <span>Freelance</span>
-                                    <span>$5,450.00</span>
-                                </div>
-                                <div class="progress-bar cashflow-card_progress">
-                                    <div class="progress-bar_value" style="width: 20%;"></div>
-                                </div>
-                            </div>
-
-                            <div class="top-row">
-                                <div class="top-row_part">
-                                    <span>Investments</span>
-                                    <span>$3,000.00</span>
-                                </div>
-                                <div class="progress-bar cashflow-card_progress">
-                                    <div class="progress-bar_value" style="width: 10%;"></div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="stats"></div>
+                        <span class="no-transactions" id="empty-income-message">Add some income</span>
                     </section>
 
                     <section class="card expense-card">
                         <h2 class="label">Expenses</h2>
-                        <p class="amount">$7,919.20</p>
+                        <p class="amount">$0.00</p>
 
                         <div class="trend-row">
                             <img src="assets/arrow_down.svg"
                             width="12px"
-                            height="12px">
-                            <p class="trend">-8,2% from last month</p>
+                            height="12px"
+                            id="expenseTrendIcon">
+                            <p class="trend" id="expenseTrendText">0.0% from last month</p>
                         </div>
                         <div class="sparkbar-chart">
                             <canvas id="expenseChart"></canvas>
                         </div>
 
                         <p class="label-mini stats_label">Top categories</p>
-                        <div class="stats">
-                            <div class="top-row">
-                                <div class="top-row_part">
-                                    <span>Housing</span>
-                                    <span>$2,450.00</span>
-                                </div>
-                                <div class="progress-bar cashflow-card_progress">
-                                    <div class="progress-bar_value"></div>
-                                </div>
-                            </div>
-
-                            <div class="top-row">
-                                <div class="top-row_part">
-                                    <span>Food</span>
-                                    <span>$1,230.00</span>
-                                </div>
-                                <div class="progress-bar cashflow-card_progress">
-                                    <div class="progress-bar_value"></div>
-                                </div>
-                            </div>
-
-                            <div class="top-row">
-                                <div class="top-row_part">
-                                    <span>Transport</span>
-                                    <span>$890.00</span>
-                                </div>
-                                <div class="progress-bar cashflow-card_progress">
-                                    <div class="progress-bar_value"></div>
-                                </div>
-                            </div>
+                        <div class="stats"></div>
+                        <span class="no-transactions" id="empty-expense-message">Add some expenses</span>
                     </section>
 
                     <section class="card budget-card">
@@ -260,7 +206,7 @@
                                      <div class="circle-progress_outer">
                                         <div class="circle-progress_inner">
                                             <div class="circle-progress_stat">
-                                                <strong id="circleProgressAmount">53%</strong>
+                                                <strong id="circleProgressAmount">0%</strong>
                                                 <span>Used</span>
                                             </div>
                                         </div>
@@ -279,93 +225,46 @@
 
                                 <div class="budget-amounts">
                                     <div>
-                                        <strong>$10,080.00</strong>
+                                        <strong>$0.00</strong>
                                         <p class="label-mini">Total budget</p>
                                     </div>
                                     
                                     <div>
-                                        <strong>$2,080.80</strong>
+                                        <strong>$0.00</strong>
                                         <p class="label-mini">Remaining</p>
                                     </div>
                                     
                                     <div>
-                                        <strong>Health</strong>
-                                        <p class="label-mini">Type</p>
+                                        <strong>$0.00</strong>
+                                        <p class="label-mini">Spent</p>
                                     </div>
                                 </div>
 
                             </div>
                             <div class="reset-time">
                                 <p class="label-mini">Reset in</p>
-                                <time>15D : 08H : 42M</time>
+                                <time id="resetTimerText">00D : 00H : 00M</time>
                             </div>
                     </section>
 
                     <section class="card transactions-card">
                         <h2 class="label">Recent transactions</h2>
+                        <div class="table-container">
                         <table class="transactions-table dashboard-table">
                             <thead>
                                 <tr class="table_header-stroke">
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Category</th>
-                                    <th>Type</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
+                                        <th data-sort="date">Date</th>
+                                        <th data-sort="description">Description</th>
+                                        <th data-sort="category">Category</th>
+                                        <th data-sort="type">Type</th>
+                                        <th data-sort="amount">Amount</th>
+                                        <th data-sort="status">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Строка 1 -->
-                                <tr>
-                                <td>May 24, 2024</td>
-                                <td>Salary Payment</td>
-                                <td>Income</td>
-                                <td>+</td>
-                                <td>$6,000.00</td>
-                                <td>● Completed</td>
-                                </tr>
-
-                                <!-- Строка 2 -->
-                                <tr>
-                                <td>May 23, 2024</td>
-                                <td>Dribbble Pro</td>
-                                <td>Software</td>
-                                <td>-</td>
-                                <td>$12.00</td>
-                                <td>● Completed</td>
-                                </tr>
-
-                                <!-- Строка 3 -->
-                                <tr>
-                                <td>May 22, 2024</td>
-                                <td>Uber Ride</td>
-                                <td>Transport</td>
-                                <td>-</td>
-                                <td>$18.50</td>
-                                <td>● Completed</td>
-                                </tr>
-
-                                <!-- Строка 4 -->
-                                <tr>
-                                <td>May 22, 2024</td>
-                                <td>Grocery Shopping</td>
-                                <td>Food</td>
-                                <td>-</td>
-                                <td>$64.25</td>
-                                <td>● Completed</td>
-                                </tr>
-
-                                <!-- Строка 5 -->
-                                <tr>
-                                <td>May 21, 2024</td>
-                                <td>Freelance Project</td>
-                                <td>Income</td>
-                                <td>+</td>
-                                <td>$1,250.00</td>
-                                <td>● Completed</td>
-                                </tr>
                             </tbody>
                         </table>
+                        </div>
 
                         <a href="transactions.html" class="transactions-button">
                             <div>
@@ -375,6 +274,7 @@
                                 height="20px">
                             </div>
                         </a>
+                        <span class="no-transactions" id="empty-table-message">No transactions yet</span>
                     </section>
                     <section class="card quick-actions-card">
                         <h2 class="label">Quick actions</h2>
@@ -456,13 +356,18 @@
                 
                 <div class="modal-body">
                     <div class="form-group">
+                        <label for="incomeDate" class="label-mini">Date</label>
+                        <input type="date" id="incomeDate" class="form-control">
+                    </div>
+
+                    <div class="form-group">
                         <label for="incomeInput" class="label-mini">Amount</label>
                         <input type="number" id="incomeInput" class="form-control" placeholder="$ 0.00">
                     </div>
 
                     <div class="form-group">
                         <label for="incomeDescription" class="label-mini">Description</label>
-                        <input type="text" class="form-description" id="incomeDescription" placeholder="Add description">
+                        <input type="text" class="form-description" id="incomeDescription" placeholder="Add description" maxlength="50">
                     </div>
                     
                     <div class="form-group">
@@ -494,13 +399,18 @@
                 
                 <div class="modal-body">
                     <div class="form-group">
+                        <label for="expenseDate" class="label-mini">Date</label>
+                        <input type="date" id="expenseDate" class="form-control">
+                    </div>
+
+                    <div class="form-group">
                         <label for="expenseInput" class="label-mini">Amount</label>
                         <input type="number" id="expenseInput" class="form-control" placeholder="$ 0.00">
                     </div>
 
                     <div class="form-group">
                         <label for="expenseDescription" class="label-mini">Description</label>
-                        <input type="text" class="form-description" id="expenseDescription" placeholder="Add description">
+                        <input type="text" class="form-description" id="expenseDescription" placeholder="Add description" maxlength="50">
                     </div>
 
                     <div class="form-group">
@@ -520,6 +430,42 @@
                     </div>
                     
                     <button class="primary-button" id="submitExpenseBtn">Add to balance</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="setBudgetModal">
+            <div class="modal-card card">
+                <div class="modal-header">
+                    <h2 class="label">Set budget</h2>
+                    <button class="close-modal-button" id="closeBudgetButton" aria-label="Close modal">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="budgetInput" class="label-mini">Amount</label>
+                        <input type="number" id="budgetInput" class="form-control" placeholder="$ 0.00">
+                    </div>
+                    
+                    <button class="primary-button" id="submitBudgetBtn">Save budget</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="setGoalModal">
+            <div class="modal-card card">
+                <div class="modal-header">
+                    <h2 class="label">New goal</h2>
+                    <button class="close-modal-button" id="closeGoalButton" aria-label="Close modal">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="goalInput" class="label-mini">Amount</label>
+                        <input type="number" id="goalInput" class="form-control" placeholder="$ 0.00">
+                    </div>
+                    
+                    <button class="primary-button" id="submitGoalBtn">Save goal</button>
                 </div>
             </div>
         </div>

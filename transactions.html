@@ -53,7 +53,7 @@
                     <div class="sidebar-card">
                         <div class="sidebar-card_borders"></div>
                         <span>Total balance</span>
-                        <strong class="sidebar-card_balance">$24,530.80</strong>
+                        <strong class="sidebar-card_balance">$0.00</strong>
                         <span>USD</span>
                         <div class="sidebar-chart">
                             <canvas id="transactionsPageLineChart"></canvas>
@@ -64,29 +64,35 @@
                     <div class="sidebar-card">
                         <div class="sidebar-card_borders"></div>
                         <span>User</span>
-                        <strong class="username">Monyx_42</strong>
-                        <span>Premium plan</span>
+                        <strong class="username">Guest</strong>
+                        <span>Free plan</span>
                     </div>
                 </div>
             </aside>
 
-            <main class="main">
+            <main class="transaction-page-main main">
+                <header class="transactions-topbar topbar">
+                    <h1>Transactions</h1>
+                </header>
                 <section class="card transactions-list">
+                    <div class="table-container transactions-scroll-container">
                     <table class="transactions-table transactions-list-table">
-                            <thead>
-                                <tr class="table_header-stroke">
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Category</th>
-                                    <th>Type</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Сюда JS загрузит транзакции -->
-                            </tbody>
-                        </table>
+                        <thead>
+                            <tr class="table_header-stroke">
+                                    <th data-sort="date">Date</th>
+                                    <th data-sort="description">Description</th>
+                                    <th data-sort="category">Category</th>
+                                    <th data-sort="type">Type</th>
+                                    <th data-sort="amount">Amount</th>
+                                    <th data-sort="status">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Сюда JS загрузит транзакции -->
+                        </tbody>
+                    </table>
+                    </div>
+                    <span class="no-transactions" id="empty-transactions-page-table-message">No transactions yet</span>
                 </section>
             </main>
         </div>
